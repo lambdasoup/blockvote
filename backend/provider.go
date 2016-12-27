@@ -34,6 +34,9 @@ func (bc *Blockcypher) Fetch(ctx context.Context, h int) (Block, error) {
 
 	// get block
 	res, err := client.Get("https://api.blockcypher.com/v1/btc/main/blocks/" + strconv.Itoa(h) + "?txstart=0&limit=1")
+	if err != nil {
+		return Block{}, err
+	}
 	if res.StatusCode == http.StatusNotFound {
 		return Block{}, ErrBlockNotFound
 	}

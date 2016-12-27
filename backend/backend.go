@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"google.golang.org/appengine"
+	"google.golang.org/appengine/log"
 )
 
 var provider Provider
@@ -63,9 +64,9 @@ func pollFunc(w http.ResponseWriter, r *http.Request) {
 	b, err := provider.Fetch(ctx, h)
 	switch err {
 	default:
-		// TODO log error
+		log.Errorf(ctx, "could not fetch block: %v", err)
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("err " + err.Error()))
+		w.Write([]byte("could not fetch block:" + err.Error()))
 		return
 	case ErrBlockNotFound:
 		w.Write([]byte("block " + strconv.Itoa(h) + " not available yet"))
@@ -77,10 +78,11 @@ func pollFunc(w http.ResponseWriter, r *http.Request) {
 
 	err = db.Save(ctx, b)
 	if err != nil {
-		// TODO log error
+		log.Errorf(ctx, "could not save block: %v", err)
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("err " + err.Error()))
+		w.Write([]byte("could not save block: " + err.Error()))
 		return
 	}
+	log.Infof(ctx, "fetched and saved block %v", b)
 	w.Write([]byte("fetched and saved block " + strconv.Itoa(b.Height)))
 }
