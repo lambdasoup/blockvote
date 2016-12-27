@@ -1,0 +1,5 @@
+cron:
+- description: block polling
+  url: /poll
+  schedule: every 5 minutes
+  target: default
