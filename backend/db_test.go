@@ -86,7 +86,7 @@ func Test_Latest_OK(t *testing.T) {
 	db.SaveBlock(b1)
 	db.SaveBlock(b2)
 
-	b, err := db.Latest()
+	b, err := db.LatestBlock()
 
 	if err != nil {
 		t.Fatal(err)
@@ -107,7 +107,7 @@ func Test_Latest_ErrNoBlocks(t *testing.T) {
 
 	db := Datastore{ctx}
 
-	_, err := db.Latest()
+	_, err := db.LatestBlock()
 
 	if err != ErrNoBlocks {
 		t.Fatal("should have no blocks error")

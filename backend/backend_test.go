@@ -14,8 +14,12 @@ func (db *TestDB) GetConfig() (Config, error) {
 	return Config{}, nil
 }
 
-func (db *TestDB) Latest() (Block, error) {
+func (db *TestDB) LatestBlock() (Block, error) {
 	return Block{}, nil
+}
+
+func (db *TestDB) LatestStats() (Stats, error) {
+	return Stats{}, nil
 }
 
 func (db *TestDB) SaveBlock(Block) error {
@@ -89,7 +93,7 @@ func Test_Stats(t *testing.T) {
 	db := &TestDB{blocks: []Block{b1, b2, b3, b4}}
 
 	be := &Backend{db, nil, &TestLogger{}, &TestReactor{}}
-	err := be.stats(ts)
+	err := be.updateStats(ts)
 	if err != nil {
 		t.Fatalf("stats failed: %v", err)
 	}

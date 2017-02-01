@@ -10,7 +10,7 @@ handlers:
   secure: always
   login: admin
 
-- url: /stats
+- url: /update-stats
   script: _go_app
   secure: always
   login: admin

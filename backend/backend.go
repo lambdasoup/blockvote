@@ -51,7 +51,11 @@ type Backend struct {
 
 var day = time.Hour * 24
 
-func (be *Backend) stats(ts time.Time) error {
+func (be *Backend) latestStats() (Stats, error) {
+	return be.LatestStats()
+}
+
+func (be *Backend) updateStats(ts time.Time) error {
 	s := Stats{Timestamp: ts, Votes: make(map[string]Vote)}
 
 	d30ts := ts.Add(-day * 30)
@@ -122,7 +126,7 @@ func makeVote(cs []int, total []int) Vote {
 func (be *Backend) poll() error {
 	// determine next block height
 	var h int
-	lb, err := be.Latest()
+	lb, err := be.LatestBlock()
 	switch err {
 	case ErrNoBlocks:
 		// height from config

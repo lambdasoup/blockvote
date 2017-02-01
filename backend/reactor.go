@@ -18,7 +18,7 @@ type AEReactor struct {
 
 // TriggerUpdateStats triggers a stats update
 func (r *AEReactor) TriggerUpdateStats() error {
-	t := taskqueue.NewPOSTTask("/stats", nil)
+	t := taskqueue.NewPOSTTask("/update-stats", nil)
 	_, err := taskqueue.Add(r.ctx, t, "")
 	return err
 }

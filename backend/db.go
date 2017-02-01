@@ -12,6 +12,7 @@ import (
 // Errors
 var (
 	ErrNoBlocks = errors.New("no blocks available")
+	ErrNoStats  = errors.New("no stats available")
 )
 
 // Datastore implements DB via Google Cloud Datastore
@@ -27,8 +28,11 @@ type DB interface {
 	// GetConfig gets the current config from the database
 	GetConfig() (Config, error)
 
-	// Latest returns the latest block (by height) in the database
-	Latest() (Block, error)
+	// LatestBlock returns the latest block (by height) in the database
+	LatestBlock() (Block, error)
+
+	// LatestStats returns the latest stats in the database
+	LatestStats() (Stats, error)
 
 	// SaveStats saves the given stats into the db
 	SaveStats(Stats) error
@@ -85,8 +89,8 @@ func (ds *Datastore) GetConfig() (c Config, err error) {
 	return c, err
 }
 
-// Latest returns the latest block (by height) in the database
-func (ds *Datastore) Latest() (b Block, err error) {
+// LatestBlock returns the latest block (by height) in the database
+func (ds *Datastore) LatestBlock() (b Block, err error) {
 	// run query
 	bs := []Block{}
 	_, err = datastore.NewQuery("Block").
@@ -104,6 +108,41 @@ func (ds *Datastore) Latest() (b Block, err error) {
 
 	b = bs[0]
 	return
+}
+
+// LatestStats returns the latest stats in the database
+func (ds *Datastore) LatestStats() (Stats, error) {
+	ss := []Stats{}
+
+	ks, err := datastore.NewQuery("Stats").
+		Limit(1).
+		Order("-Timestamp").
+		GetAll(ds.ctx, &ss)
+	if err != nil {
+		return Stats{}, err
+	}
+
+	if len(ss) == 0 {
+		return Stats{}, ErrNoStats
+	}
+
+	s := ss[0]
+	k := ks[0]
+
+	var vs []Vote
+	vks, err := datastore.NewQuery("Vote").
+		Ancestor(k).
+		GetAll(ds.ctx, &vs)
+	if err != nil {
+		return Stats{}, err
+	}
+
+	s.Votes = make(map[string]Vote)
+	for i, v := range vs {
+		s.Votes[vks[i].StringID()] = v
+	}
+
+	return s, nil
 }
 
 // ForEachFrom calls the given method for each saves Block starting from the
