@@ -21,16 +21,17 @@ var (
 // Provider provides Blockhain info
 type Provider interface {
 	// Fetch fetches a block at the given height
-	Fetch(context.Context, int) (Block, error)
+	Fetch(int) (Block, error)
 }
 
 // Blockcypher is a Blockchain info provider hosted at blockcypher.com
 type Blockcypher struct {
+	ctx context.Context
 }
 
 // Fetch fetches a Block at the given height
-func (bc *Blockcypher) Fetch(ctx context.Context, h int) (Block, error) {
-	client := urlfetch.Client(ctx)
+func (bc *Blockcypher) Fetch(h int) (Block, error) {
+	client := urlfetch.Client(bc.ctx)
 
 	// get block
 	res, err := client.Get("https://api.blockcypher.com/v1/btc/main/blocks/" + strconv.Itoa(h) + "?txstart=0&limit=1")

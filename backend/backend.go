@@ -1,29 +1,23 @@
 package backend
 
 import (
-	"net/http"
+	"bytes"
+	"encoding/hex"
+	"fmt"
 	"strconv"
 	"time"
-
-	"google.golang.org/appengine"
-	"google.golang.org/appengine/log"
 )
-
-var provider Provider
-var db DB
-
-func init() {
-	provider = &Blockcypher{}
-	db = &Datastore{}
-
-	http.HandleFunc("/poll", pollFunc)
-}
 
 // Config is the backend's config
 type Config struct {
 	// InitialHeight is the block height where polling should start with
 	InitialHeight int
 }
+
+var (
+	signalAD = []byte("AD")
+	signalEB = []byte("EB")
+)
 
 // Block is one Blockchain entry
 type Block struct {
@@ -34,55 +28,136 @@ type Block struct {
 	Timestamp time.Time `json:"time"`
 }
 
-func pollFunc(w http.ResponseWriter, r *http.Request) {
-	ctx := appengine.NewContext(r)
+// Stats is the statitics for one day
+type Stats struct {
+	Timestamp time.Time       `json:"time"`
+	Votes     map[string]Vote `datastore:"-" json:"votes"`
+}
 
-	// TODO determine next block height
+// Vote is a the block vote for muliple intervals
+type Vote struct {
+	D1  float32 `json:"d1"`
+	D7  float32 `json:"d7"`
+	D30 float32 `json:"d30"`
+}
+
+// Backend is the backend here
+type Backend struct {
+	DB
+	Provider
+	Logger
+}
+
+var day = time.Hour * 24
+
+func (be *Backend) stats(ts time.Time) error {
+	s := Stats{Timestamp: ts, Votes: make(map[string]Vote)}
+
+	d30ts := ts.Add(-day * 30)
+	d7ts := ts.Add(-day * 7)
+	d1ts := ts.Add(-day)
+
+	total := make([]int, 3)
+	swcs := make([]int, 3)
+	bucs := make([]int, 3)
+
+	be.ForEachFrom(d30ts, func(b Block) {
+		total[0]++
+		if hasSegWitSignal(b) {
+			swcs[0]++
+		}
+		if hasUnlimitedSignal(b) {
+			bucs[0]++
+		}
+
+		if b.Timestamp.After(d7ts) {
+			total[1]++
+			if hasSegWitSignal(b) {
+				swcs[1]++
+			}
+			if hasUnlimitedSignal(b) {
+				bucs[1]++
+			}
+		}
+
+		if b.Timestamp.After(d1ts) {
+			total[2]++
+			if hasSegWitSignal(b) {
+				swcs[2]++
+			}
+			if hasUnlimitedSignal(b) {
+				bucs[2]++
+			}
+		}
+	})
+
+	s.Votes["segwit"] = makeVote(swcs, total)
+	s.Votes["unlimited"] = makeVote(bucs, total)
+
+	err := be.SaveStats(s)
+	return err
+}
+
+func hasSegWitSignal(b Block) bool {
+	return (0x00000002 & b.Version) > 0
+}
+
+func hasUnlimitedSignal(b Block) bool {
+	bs, err := hex.DecodeString(b.Script)
+	if err != nil {
+		panic(fmt.Sprintf("could not decode script in block %v", b))
+	}
+	return bytes.Contains(bs, signalAD) && bytes.Contains(bs, signalEB)
+}
+
+func makeVote(cs []int, total []int) Vote {
+	return Vote{
+		D30: float32(cs[0]) / float32(total[0]),
+		D7:  float32(cs[1]) / float32(total[1]),
+		D1:  float32(cs[2]) / float32(total[2]),
+	}
+}
+
+func (be *Backend) poll() error {
+	// determine next block height
 	var h int
-	lb, err := db.Latest(ctx)
+	lb, err := be.Latest()
 	switch err {
 	case ErrNoBlocks:
 		// height from config
 		var c Config
-		c, err = db.GetConfig(ctx)
+		c, err = be.GetConfig()
 		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte("err " + err.Error()))
-			return
+			return err
 		}
 		h = c.InitialHeight
 	case nil:
 		// height from latest block
 		h = lb.Height + 1
 	default:
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("err " + err.Error()))
-		return
+		return err
 	}
 
 	// fetch next block
-	b, err := provider.Fetch(ctx, h)
+	b, err := be.Fetch(h)
 	switch err {
 	default:
-		log.Errorf(ctx, "could not fetch block: %v", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("could not fetch block:" + err.Error()))
-		return
+		be.Errorf("could not fetch block: %v", err)
+		return err
 	case ErrBlockNotFound:
-		w.Write([]byte("block " + strconv.Itoa(h) + " not available yet"))
-		return
+		be.Infof("block " + strconv.Itoa(h) + " not available yet")
+		return nil
 	case nil:
 		// happy case
 		break
 	}
 
-	err = db.Save(ctx, b)
+	err = be.SaveBlock(b)
 	if err != nil {
-		log.Errorf(ctx, "could not save block: %v", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("could not save block: " + err.Error()))
-		return
+		be.Errorf("could not save block: %v", err)
+		return err
 	}
-	log.Infof(ctx, "fetched and saved block %v", b)
-	w.Write([]byte("fetched and saved block " + strconv.Itoa(b.Height)))
+	be.Infof("fetched and saved block %v", b)
+
+	return nil
 }

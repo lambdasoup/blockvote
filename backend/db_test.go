@@ -21,8 +21,8 @@ func Test_GetConfig_OK(t *testing.T) {
 	c := Config{InitialHeight: 200000}
 	datastore.Put(ctx, k, &c)
 
-	db := Datastore{}
-	c, err := db.GetConfig(ctx)
+	db := Datastore{ctx}
+	c, err := db.GetConfig()
 
 	if err != nil {
 		t.Fatal(err)
@@ -41,8 +41,8 @@ func Test_GetConfig_NoConfig(t *testing.T) {
 	ctx, done, _ := aetest.NewContext()
 	defer done()
 
-	db := Datastore{}
-	c, err := db.GetConfig(ctx)
+	db := Datastore{ctx}
+	c, err := db.GetConfig()
 
 	if err != nil {
 		t.Fatal(err)
@@ -61,9 +61,9 @@ func Test_Save(t *testing.T) {
 	ctx, done, _ := aetest.NewContext()
 	defer done()
 
-	db := Datastore{}
+	db := Datastore{ctx}
 	b := Block{}
-	err := db.Save(ctx, b)
+	err := db.SaveBlock(b)
 
 	if err != nil {
 		t.Fatal(err)
@@ -80,13 +80,13 @@ func Test_Latest_OK(t *testing.T) {
 	ctx := appengine.NewContext(r)
 	defer inst.Close()
 
-	db := Datastore{}
+	db := Datastore{ctx}
 	b1 := Block{Height: 200000}
 	b2 := Block{Height: 200001}
-	db.Save(ctx, b1)
-	db.Save(ctx, b2)
+	db.SaveBlock(b1)
+	db.SaveBlock(b2)
 
-	b, err := db.Latest(ctx)
+	b, err := db.Latest()
 
 	if err != nil {
 		t.Fatal(err)
@@ -105,9 +105,9 @@ func Test_Latest_ErrNoBlocks(t *testing.T) {
 	ctx, done, _ := aetest.NewContext()
 	defer done()
 
-	db := Datastore{}
+	db := Datastore{ctx}
 
-	_, err := db.Latest(ctx)
+	_, err := db.Latest()
 
 	if err != ErrNoBlocks {
 		t.Fatal("should have no blocks error")

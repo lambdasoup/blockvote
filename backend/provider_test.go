@@ -14,8 +14,8 @@ func Test_Fetch_OK(t *testing.T) {
 	ctx, done, _ := aetest.NewContext()
 	defer done()
 
-	bc := Blockcypher{}
-	b, err := bc.Fetch(ctx, 10000)
+	bc := Blockcypher{ctx}
+	b, err := bc.Fetch(10000)
 
 	if err != nil {
 		t.Fatal(err)
@@ -34,8 +34,8 @@ func Test_Fetch_NotFound(t *testing.T) {
 	ctx, done, _ := aetest.NewContext()
 	defer done()
 
-	bc := Blockcypher{}
-	_, err := bc.Fetch(ctx, 1000000)
+	bc := Blockcypher{ctx}
+	_, err := bc.Fetch(1000000)
 
 	if err != ErrBlockNotFound {
 		t.Fatal(err)
