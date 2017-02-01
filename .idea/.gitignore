@@ -1,0 +1,8 @@
+/*
+
+# we want to share these things between devs
+!.name
+!runConfigurations*
+!codeStyleSettings.xml
+!copyright
+!encodings.xml
