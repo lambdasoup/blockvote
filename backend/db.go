@@ -3,11 +3,13 @@ package backend
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"strconv"
 	"time"
 
 	"golang.org/x/net/context"
 	"google.golang.org/appengine/datastore"
+	"google.golang.org/appengine/log"
 	"google.golang.org/appengine/memcache"
 )
 
@@ -57,6 +59,7 @@ func (ds *Datastore) dayStatsKey(t time.Time) *datastore.Key {
 
 // SaveStats saves the given stats into the db
 func (ds *Datastore) SaveStats(s Stats) error {
+	log.Infof(ds.ctx, "saving stats %v", s)
 	err := datastore.RunInTransaction(ds.ctx, func(tctx context.Context) error {
 		k := ds.dayStatsKey(s.Timestamp)
 		_, terr := datastore.Put(tctx, k, &s)
@@ -74,10 +77,6 @@ func (ds *Datastore) SaveStats(s Stats) error {
 
 		return nil
 	}, nil)
-	if err != nil {
-		return err
-	}
-
 	return err
 }
 
@@ -150,20 +149,28 @@ func (ds *Datastore) LatestStats() (Stats, error) {
 // ForEachFrom calls the given method for each saves Block starting from the
 // given Timestamp
 func (ds *Datastore) ForEachFrom(ts time.Time, f func(Block)) error {
+	// get all block keys for period
 	t := datastore.NewQuery("Block").
 		Filter("Timestamp >=", ts).
 		KeysOnly().
 		Run(ds.ctx)
-
+	var bks []*datastore.Key
+	c := 0
 	for {
+		c++
 		bk, err := t.Next(nil)
 		if err == datastore.Done {
 			break
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("error after iterating over %d block keys: %v", c, err)
 		}
+		bks = append(bks, bk)
+	}
+	log.Infof(ds.ctx, "iterated over %d keys", c)
 
+	// iterate over blocks
+	for _, bk := range bks {
 		b, err := ds.getBlock(bk)
 		if err != nil {
 			return err
@@ -208,15 +215,11 @@ func (ds *Datastore) getBlock(bk *datastore.Key) (Block, error) {
 		return b, nil
 	}
 
-	// something else went wront
+	// something else went wrong
 	if err != nil {
 		return b, err
 	}
 
 	err = json.Unmarshal(item.Value, &b)
-	if err != nil {
-		return b, err
-	}
-
-	return b, nil
+	return b, err
 }

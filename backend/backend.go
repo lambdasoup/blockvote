@@ -66,7 +66,7 @@ func (be *Backend) updateStats(ts time.Time) error {
 	swcs := make([]int, 3)
 	bucs := make([]int, 3)
 
-	be.ForEachFrom(d30ts, func(b Block) {
+	err := be.ForEachFrom(d30ts, func(b Block) {
 		total[0]++
 		if hasSegWitSignal(b) {
 			swcs[0]++
@@ -95,11 +95,14 @@ func (be *Backend) updateStats(ts time.Time) error {
 			}
 		}
 	})
+	if err != nil {
+		return err
+	}
 
 	s.Votes["segwit"] = makeVote(swcs, total)
 	s.Votes["unlimited"] = makeVote(bucs, total)
 
-	err := be.SaveStats(s)
+	err = be.SaveStats(s)
 	return err
 }
 
