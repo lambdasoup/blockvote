@@ -50,8 +50,14 @@ func (l *TestLogger) Errorf(format string, args ...interface{}) {
 
 }
 
+type TestReactor struct{}
+
+func (r *TestReactor) TriggerUpdateStats() error {
+	return nil
+}
+
 func Test_Poll(t *testing.T) {
-	be := &Backend{&TestDB{}, &TestProvider{}, &TestLogger{}}
+	be := &Backend{&TestDB{}, &TestProvider{}, &TestLogger{}, &TestReactor{}}
 	err := be.poll()
 	if err != nil {
 		t.Errorf("poll failed: %v", err)
@@ -82,7 +88,7 @@ func Test_Stats(t *testing.T) {
 	b4 := Block{Version: 0x20000000, Timestamp: ts, Script: "0391a106102f5669614254432f4542322f4144342f2cfabe6d6dad259f24295e0872f4771fff38a6d80b3cdb359cb28dcc9009521c0899a2a5500100000000000000122d36fd1028f01e12b6c48886fda23a0e0a00"}
 	db := &TestDB{blocks: []Block{b1, b2, b3, b4}}
 
-	be := &Backend{db, nil, &TestLogger{}}
+	be := &Backend{db, nil, &TestLogger{}, &TestReactor{}}
 	err := be.stats(ts)
 	if err != nil {
 		t.Fatalf("stats failed: %v", err)

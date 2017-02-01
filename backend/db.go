@@ -7,7 +7,6 @@ import (
 
 	"golang.org/x/net/context"
 	"google.golang.org/appengine/datastore"
-	"google.golang.org/appengine/log"
 )
 
 // Errors
@@ -61,7 +60,6 @@ func (ds *Datastore) SaveStats(s Stats) error {
 
 		for sv, v := range s.Votes {
 			vk := datastore.NewKey(tctx, "Vote", sv, 0, k)
-			log.Infof(tctx, "saving vote: %v", s)
 			_, terr := datastore.Put(tctx, vk, &v)
 			if terr != nil {
 				return terr

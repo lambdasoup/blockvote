@@ -46,6 +46,7 @@ type Backend struct {
 	DB
 	Provider
 	Logger
+	Reactor
 }
 
 var day = time.Hour * 24
@@ -159,5 +160,6 @@ func (be *Backend) poll() error {
 	}
 	be.Infof("fetched and saved block %v", b)
 
-	return nil
+	err = be.TriggerUpdateStats()
+	return err
 }
