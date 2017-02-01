@@ -1,12 +1,14 @@
 package backend
 
 import (
+	"encoding/json"
 	"errors"
 	"strconv"
 	"time"
 
 	"golang.org/x/net/context"
 	"google.golang.org/appengine/datastore"
+	"google.golang.org/appengine/memcache"
 )
 
 // Errors
@@ -149,21 +151,72 @@ func (ds *Datastore) LatestStats() (Stats, error) {
 // given Timestamp
 func (ds *Datastore) ForEachFrom(ts time.Time, f func(Block)) error {
 	t := datastore.NewQuery("Block").
-		Order("-Timestamp").
-		Filter("Timestamp > ", ts).
+		Filter("Timestamp >=", ts).
+		KeysOnly().
 		Run(ds.ctx)
 
 	for {
-		var b Block
-		_, err := t.Next(&b)
-		f(b)
+		bk, err := t.Next(nil)
 		if err == datastore.Done {
 			break
 		}
 		if err != nil {
 			return err
 		}
+
+		b, err := ds.getBlock(bk)
+		if err != nil {
+			return err
+		}
+		f(b)
 	}
 
 	return nil
+}
+
+func (ds *Datastore) getBlock(bk *datastore.Key) (Block, error) {
+	var b Block
+
+	item, err := memcache.Get(ds.ctx, bk.StringID())
+
+	// cache miss
+	if err == memcache.ErrCacheMiss {
+
+		// get from DB
+		err = datastore.Get(ds.ctx, bk, &b)
+		if err != nil {
+			return b, err
+		}
+
+		// encode for memcache
+		var v []byte
+		v, err = json.Marshal(&b)
+		if err != nil {
+			return b, err
+		}
+		item = &memcache.Item{
+			Key:   bk.StringID(),
+			Value: v,
+		}
+
+		// set to memcache
+		err = memcache.Set(ds.ctx, item)
+		if err != nil {
+			return b, err
+		}
+
+		return b, nil
+	}
+
+	// something else went wront
+	if err != nil {
+		return b, err
+	}
+
+	err = json.Unmarshal(item.Value, &b)
+	if err != nil {
+		return b, err
+	}
+
+	return b, nil
 }
