@@ -16,6 +16,12 @@
             </intent-filter>
         </activity>
 
+        <provider
+            android:name=".StatsProvider"
+            android:authorities="${applicationId}"
+            android:exported="false"
+            android:syncable="false"/>
+
         <service
             android:name=".BlockvoteFirebaseMessagingService">
             <intent-filter>
