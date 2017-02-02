@@ -60,6 +60,10 @@ func (r *TestReactor) TriggerUpdateStats() error {
 	return nil
 }
 
+func (r *TestReactor) SendFCMMessage(key string, topic string, s Stats) error {
+	return nil
+}
+
 func Test_Poll(t *testing.T) {
 	be := &Backend{&TestDB{}, &TestProvider{}, &TestLogger{}, &TestReactor{}}
 	err := be.poll()

@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/hex"
 	"fmt"
-	"strconv"
 	"time"
 )
 
@@ -12,6 +11,12 @@ import (
 type Config struct {
 	// InitialHeight is the block height where polling should start with
 	InitialHeight int
+
+	// FCMTopic is the FCM topic we are sending to
+	FCMTopic string
+
+	// FCMKey is the FCM server key we are using
+	FCMKey string
 }
 
 var (
@@ -103,6 +108,17 @@ func (be *Backend) updateStats(ts time.Time) error {
 	s.Votes["unlimited"] = makeVote(bucs, total)
 
 	err = be.SaveStats(s)
+	if err != nil {
+		return err
+	}
+
+	c, err := be.GetConfig()
+	if err != nil {
+		return err
+	}
+
+	err = be.SendFCMMessage(c.FCMKey, c.FCMTopic, s)
+
 	return err
 }
 
@@ -153,7 +169,7 @@ func (be *Backend) poll() error {
 		be.Errorf("could not fetch block: %v", err)
 		return err
 	case ErrBlockNotFound:
-		be.Infof("block " + strconv.Itoa(h) + " not available yet")
+		be.Infof("block %d not available yet", h)
 		return nil
 	case nil:
 		// happy case

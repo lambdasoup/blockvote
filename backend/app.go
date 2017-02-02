@@ -25,6 +25,7 @@ func statsFunc(w http.ResponseWriter, r *http.Request) {
 
 	s, err := be.latestStats()
 	if err != nil {
+		log.Errorf(ctx, err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
 		return
@@ -52,6 +53,7 @@ func updateStatsFunc(w http.ResponseWriter, r *http.Request) {
 
 	err := b.updateStats(time.Now())
 	if err != nil {
+		log.Errorf(ctx, err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
 	}
@@ -69,7 +71,8 @@ func pollFunc(w http.ResponseWriter, r *http.Request) {
 
 	err := b.poll()
 	if err != nil {
+		log.Errorf(ctx, err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("err " + err.Error()))
+		w.Write([]byte(err.Error()))
 	}
 }
