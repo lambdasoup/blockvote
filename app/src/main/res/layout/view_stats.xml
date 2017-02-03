@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:card_view="http://schemas.android.com/apk/res-auto"
+       xmlns:tools="http://schemas.android.com/tools"
+       card_view:cardCornerRadius="4dp"
+       card_view:contentPaddingBottom="@dimen/card_vertical_padding"
+       card_view:contentPaddingLeft="@dimen/card_horizontal_padding"
+       card_view:contentPaddingRight="@dimen/card_horizontal_padding"
+       card_view:contentPaddingTop="@dimen/card_vertical_padding"
+       tools:layout_height="wrap_content"
+       tools:layout_margin="@dimen/activity_horizontal_margin"
+       tools:layout_width="match_parent"
+       tools:parentTag="android.support.v7.widget.CardView">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stats_title"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/stats_info"/>
+
+        <android.support.v4.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/card_vertical_padding"/>
+
+        <TextView
+            android:id="@+id/empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/info_nodata"
+            android:visibility="gone"
+            tools:visibility="gone"/>
+
+        <TableLayout
+            android:id="@+id/table"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="0,1,2,3">
+
+            <TableRow>
+
+                <TextView
+                    android:layout_column="1"
+                    android:text="@string/head_d1"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:text="@string/head_d7"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:text="@string/head_d30"
+                    android:textStyle="bold"/>
+
+            </TableRow>
+
+
+            <TableRow>
+
+                <TextView
+                    android:text="@string/name_segwit"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/segwit_d1"
+                    tools:text="32.3%"/>
+
+                <TextView
+                    android:id="@+id/segwit_d7"
+                    tools:text="21.7%"/>
+
+                <TextView
+                    android:id="@+id/segwit_d30"
+                    tools:text="19.8%"/>
+
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:text="@string/name_unlimited"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/unlimited_d1"
+                    tools:text="41.1%"/>
+
+                <TextView
+                    android:id="@+id/unlimited_d7"
+                    tools:text="32.5%"/>
+
+                <TextView
+                    android:id="@+id/unlimited_d30"
+                    tools:text="26.6%"/>
+
+            </TableRow>
+        </TableLayout>
+
+    </LinearLayout>
+
+</merge>

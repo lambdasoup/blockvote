@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Block Vote</string>
+    <string name="formatted">%.1f%%</string>
+    <string name="name_unlimited">Bitcoin Unlimited</string>
+    <string name="name_segwit">Segregated Witness</string>
+    <string name="head_d1">1 day</string>
+    <string name="head_d7">7 days</string>
+    <string name="head_d30">30 days</string>
+    <string name="stats_title">Current Statistics</string>
+    <string name="info_nodata">Stats will become available shortly. This app receives data in the background - you do not need to keep this app open.</string>
+    <string name="stats_info">These are the percentages of blocks signaling a certain scaling solution</string>
 </resources>

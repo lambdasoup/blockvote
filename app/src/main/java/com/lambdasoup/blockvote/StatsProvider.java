@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -38,7 +39,12 @@ public class StatsProvider extends ContentProvider {
 	@Nullable
 	@Override
 	public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-		return null;
+		SQLiteDatabase     db                 = dbHelper.getWritableDatabase();
+		SQLiteQueryBuilder sqLiteQueryBuilder = new SQLiteQueryBuilder();
+		sqLiteQueryBuilder.setTables(Stats.TABLE_NAME);
+		Cursor cursor = sqLiteQueryBuilder.query(db, projection, selection, selectionArgs, null, null, sortOrder);
+		cursor.setNotificationUri(context().getContentResolver(), uri);
+		return cursor;
 	}
 
 	@Nullable
@@ -67,7 +73,11 @@ public class StatsProvider extends ContentProvider {
 
 	@Override
 	public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
-		throw new UnsupportedOperationException("delete is not supported");
+		SQLiteDatabase db   = dbHelper.getWritableDatabase();
+		int            rows = db.delete(Stats.TABLE_NAME, selection, selectionArgs);
+		db.close();
+		context().getContentResolver().notifyChange(uri, null);
+		return rows;
 	}
 
 	// upsert as per variant 'update-first', from http://stackoverflow.com/a/418988/470509
