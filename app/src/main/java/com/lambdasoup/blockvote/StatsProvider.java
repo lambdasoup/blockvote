@@ -107,7 +107,7 @@ public class StatsProvider extends ContentProvider {
 
 	static class DbHelper extends SQLiteOpenHelper {
 
-		static final int    DATABASE_VERSION = 1;
+		static final int    DATABASE_VERSION = 2;
 		static final String DATABASE_NAME    = "stats.db";
 
 // @formatter:off
@@ -115,6 +115,7 @@ public class StatsProvider extends ContentProvider {
 		private static final String SQL_CREATE_STATS =
 				"CREATE TABLE " + Stats.TABLE_NAME + " ("
 						+ Stats.ID     + " TEXT PRIMARY KEY NOT NULL,"
+						+ Stats.TIME   + " TEXT NOT NULL,"
 						+ Stats.D30    + " REAL NOT NULL,"
 						+ Stats.D7     + " REAL NOT NULL,"
 						+ Stats.D1     + " REAL NOT NULL"
