@@ -3,3 +3,8 @@ cron:
   url: /poll
   schedule: every 5 minutes
   target: default
+
+- description: stats update
+  url: /update-stats
+  schedule: every 1 hours
+  target: default

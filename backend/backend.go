@@ -182,7 +182,5 @@ func (be *Backend) poll() error {
 		return err
 	}
 	be.Infof("fetched and saved block %v", b)
-
-	err = be.TriggerUpdateStats()
 	return err
 }
