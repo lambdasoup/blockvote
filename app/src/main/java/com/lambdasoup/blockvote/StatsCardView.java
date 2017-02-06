@@ -120,4 +120,8 @@ public class StatsCardView extends CardView {
 			throw new RuntimeException("cannot parse " + string);
 		}
 	}
+
+	public void tick() {
+		updateData();
+	}
 }
