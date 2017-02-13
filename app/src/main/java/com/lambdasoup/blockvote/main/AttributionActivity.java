@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lambdasoup.blockvote;
+package com.lambdasoup.blockvote.main;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.lambdasoup.blockvote.R;
 
 public class AttributionActivity extends AppCompatActivity {
 

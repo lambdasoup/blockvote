@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lambdasoup.blockvote;
+package com.lambdasoup.blockvote.data;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -28,6 +28,8 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import com.lambdasoup.blockvote.BuildConfig;
 
 public class StatsProvider extends ContentProvider {
 

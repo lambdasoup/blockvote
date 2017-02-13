@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lambdasoup.blockvote;
+package com.lambdasoup.blockvote.main;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -28,6 +28,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.lambdasoup.blockvote.R;
+import com.lambdasoup.blockvote.data.StatsProvider;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;

@@ -1,4 +1,20 @@
-package com.lambdasoup.blockvote;
+/*
+ * Copyright 2017 mh@lambdasoup.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.lambdasoup.blockvote.main;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -9,6 +25,10 @@ import android.text.format.DateUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.TextView;
+
+import com.lambdasoup.blockvote.R;
+import com.lambdasoup.blockvote.data.CursorUtils;
+import com.lambdasoup.blockvote.data.Stats;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -48,19 +68,6 @@ public class StatsCardView extends CardView {
 		}
 	}
 
-	private static Id getId(Cursor cursor) {
-		String name = cursor.getString(cursor.getColumnIndex(Stats.ID));
-		return Id.valueOf(name);
-	}
-
-	private static float getFloat(Cursor cursor, String col) {
-		return cursor.getFloat(cursor.getColumnIndex(col));
-	}
-
-	private static String getString(Cursor cursor, String col) {
-		return cursor.getString(cursor.getColumnIndex(col));
-	}
-
 	private void setEmpty(boolean empty) {
 		findViewById(R.id.empty).setVisibility(empty ? VISIBLE : GONE);
 		findViewById(R.id.table).setVisibility(empty ? GONE : VISIBLE);
@@ -87,19 +94,19 @@ public class StatsCardView extends CardView {
 
 		cursor.moveToPrevious();
 		while (cursor.moveToNext()) {
-			setLastUpdated(getString(cursor, Stats.TIME));
+			setLastUpdated(CursorUtils.getString(cursor, Stats.TIME));
 
-			switch (getId(cursor)) {
+			switch (CursorUtils.getId(cursor)) {
 				case SEGWIT:
-					setCell(R.id.segwit_d1, getFloat(cursor, Stats.D1));
-					setCell(R.id.segwit_d7, getFloat(cursor, Stats.D7));
-					setCell(R.id.segwit_d30, getFloat(cursor, Stats.D30));
+					setCell(R.id.segwit_d1, CursorUtils.getFloat(cursor, Stats.D1));
+					setCell(R.id.segwit_d7, CursorUtils.getFloat(cursor, Stats.D7));
+					setCell(R.id.segwit_d30, CursorUtils.getFloat(cursor, Stats.D30));
 					break;
 
 				case UNLIMITED:
-					setCell(R.id.unlimited_d1, getFloat(cursor, Stats.D1));
-					setCell(R.id.unlimited_d7, getFloat(cursor, Stats.D7));
-					setCell(R.id.unlimited_d30, getFloat(cursor, Stats.D30));
+					setCell(R.id.unlimited_d1, CursorUtils.getFloat(cursor, Stats.D1));
+					setCell(R.id.unlimited_d7, CursorUtils.getFloat(cursor, Stats.D7));
+					setCell(R.id.unlimited_d30, CursorUtils.getFloat(cursor, Stats.D30));
 					break;
 			}
 		}

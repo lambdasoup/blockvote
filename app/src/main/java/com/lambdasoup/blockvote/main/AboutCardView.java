@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lambdasoup.blockvote;
+package com.lambdasoup.blockvote.main;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +22,8 @@ import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+
+import com.lambdasoup.blockvote.R;
 
 import static android.net.Uri.parse;
 
