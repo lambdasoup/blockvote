@@ -1,4 +1,6 @@
 # blockvote
+![Logo](https://storage.googleapis.com/blockvote-153813.appspot.com/web_hi_res_512.png)
+
 Application for tracking votes on the Bitcoin blockchain.
 
 # Support development
@@ -6,7 +8,10 @@ Like what we are doing? Consider supporting the work in one of the following way
 
 ## Donate
 You can support development of Block Vote by donating Bitcoin to this address:
-![QR code](http://i.imgur.com/yiesUgE.png "1FPT1K1DXfqFHLzQw8nFdsmibKj9J59ttW")
+
+1FPT1K1DXfqFHLzQw8nFdsmibKj9J59ttW
+
+![QR code](http://i.imgur.com/yiesUgE.png)
 
 ## Code
 You are welcome to collaborate in improving Block Vote.
