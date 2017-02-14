@@ -36,4 +36,5 @@
     <string name="name_unlimited_short">BU</string>
     <string name="widget_info_period">during last 24h</string>
     <string name="widget_title">Block Vote</string>
+    <string name="widget_empty">Waiting for data…</string>
 </resources>

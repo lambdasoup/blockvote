@@ -18,6 +18,7 @@ package com.lambdasoup.blockvote.widget;
 
 import android.annotation.SuppressLint;
 import android.app.IntentService;
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -29,6 +30,7 @@ import android.widget.RemoteViews;
 import com.lambdasoup.blockvote.R;
 import com.lambdasoup.blockvote.data.Stats;
 import com.lambdasoup.blockvote.data.StatsProvider;
+import com.lambdasoup.blockvote.main.MainActivity;
 
 import static com.lambdasoup.blockvote.data.CursorUtils.getFloat;
 import static com.lambdasoup.blockvote.data.CursorUtils.getId;
@@ -70,6 +72,9 @@ public class AppWidgetUpdateService extends IntentService {
 			}
 		}
 
+		Intent        mainIntent    = new Intent(this, MainActivity.class);
+		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, mainIntent, 0);
+		views.setOnClickPendingIntent(R.id.appwidget_root, pendingIntent);
 		appWidgetManager.updateAppWidget(ids, views);
 	}
 

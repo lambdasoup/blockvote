@@ -16,8 +16,8 @@
   -->
 
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:initialKeyguardLayout="@layout/app_widget"
-                    android:initialLayout="@layout/app_widget"
+                    android:initialKeyguardLayout="@layout/app_widget_empty"
+                    android:initialLayout="@layout/app_widget_empty"
                     android:minHeight="40dp"
                     android:minWidth="80dp"
                     android:previewImage="@drawable/appwidget_preview"
