@@ -23,4 +23,9 @@
         android:title="@string/menu_attributions"
         app:showAsAction="never"/>
 
+    <item
+        android:id="@+id/menu_privacy"
+        android:title="@string/menu_privacy"
+        app:showAsAction="never"/>
+
 </menu>

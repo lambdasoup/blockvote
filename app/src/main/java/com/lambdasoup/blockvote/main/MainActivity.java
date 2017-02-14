@@ -35,6 +35,8 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import static android.net.Uri.parse;
+
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
 	private final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
@@ -103,6 +105,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 		switch (item.getItemId()) {
 			case R.id.menu_attributions:
 				startActivity(new Intent(this, AttributionActivity.class));
+				return true;
+			case R.id.menu_privacy:
+				startActivity(new Intent(Intent.ACTION_VIEW, parse("https://lambdasoup.com/privacypolicy-blockvote/")));
 				return true;
 		}
 
