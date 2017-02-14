@@ -20,7 +20,7 @@
                     android:initialLayout="@layout/app_widget"
                     android:minHeight="40dp"
                     android:minWidth="80dp"
-                    android:previewImage="@drawable/example_appwidget_preview"
+                    android:previewImage="@drawable/appwidget_preview"
                     android:resizeMode="none"
                     android:widgetCategory="home_screen|keyguard">
 </appwidget-provider>
