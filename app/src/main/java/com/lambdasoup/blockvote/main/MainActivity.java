@@ -28,6 +28,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.lambdasoup.blockvote.BuildConfig;
 import com.lambdasoup.blockvote.R;
 import com.lambdasoup.blockvote.data.StatsProvider;
 
@@ -51,6 +52,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 		setContentView(R.layout.activity_main);
 
 		FirebaseMessaging.getInstance().subscribeToTopic("v1");
+
+		if (BuildConfig.DEBUG) {
+			FirebaseMessaging.getInstance().subscribeToTopic("debug");
+		}
 
 		statsView = (StatsCardView) findViewById(R.id.stats);
 

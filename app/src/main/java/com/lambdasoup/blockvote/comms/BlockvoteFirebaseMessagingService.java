@@ -40,6 +40,7 @@ public class BlockvoteFirebaseMessagingService extends FirebaseMessagingService 
 		String from = remoteMessage.getFrom();
 		switch (from) {
 			case "/topics/v1":
+			case "/topics/debug":
 				Map<String, String> data = remoteMessage.getData();
 				process(data);
 				break;
