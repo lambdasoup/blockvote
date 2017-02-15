@@ -30,8 +30,6 @@
     <string name="about_title">App info</string>
     <string name="about_info">This app is open source. To find more about this app and how you can collaborate and support the development, please visit the project\'s website.</string>
     <string name="about_button">open project website</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
     <string name="name_segwit_short">SW</string>
     <string name="name_unlimited_short">BU</string>
     <string name="widget_info_period">during last 24h</string>
