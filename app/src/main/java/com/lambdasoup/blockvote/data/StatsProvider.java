@@ -33,7 +33,7 @@ import com.lambdasoup.blockvote.BuildConfig;
 
 public class StatsProvider extends ContentProvider {
 
-	public static final String AUTHORITY = BuildConfig.APPLICATION_ID;
+	private static final String AUTHORITY = BuildConfig.APPLICATION_ID;
 
 	public static final Uri CONTENT_URI = new Uri.Builder().authority(AUTHORITY).scheme("content").appendEncodedPath(Stats.TABLE_NAME).build();
 
