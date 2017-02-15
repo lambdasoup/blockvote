@@ -15,6 +15,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           package="com.lambdasoup.blockvote">
@@ -42,7 +43,9 @@
             android:exported="false"
             android:syncable="false"/>
 
-        <service android:name=".comms.BlockvoteFirebaseMessagingService">
+        <service
+            android:name=".comms.BlockvoteFirebaseMessagingService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
