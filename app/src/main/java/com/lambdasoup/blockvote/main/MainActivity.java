@@ -27,6 +27,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.lambdasoup.blockvote.BuildConfig;
 import com.lambdasoup.blockvote.R;
@@ -50,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		GoogleApiAvailability.getInstance().makeGooglePlayServicesAvailable(this);
 
 		FirebaseMessaging.getInstance().subscribeToTopic("v1");
 
