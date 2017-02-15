@@ -18,6 +18,7 @@ package com.lambdasoup.blockvote.data;
 
 import android.database.Cursor;
 
+@SuppressWarnings("SameParameterValue")
 public class CursorUtils {
 
 	private CursorUtils() {

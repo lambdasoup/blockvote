@@ -97,6 +97,7 @@ public class StatsProvider extends ContentProvider {
 	}
 
 	// upsert as per variant 'update-first', from http://stackoverflow.com/a/418988/470509
+	@SuppressWarnings("SameParameterValue")
 	private void upsert(@NonNull SQLiteDatabase db, @NonNull String table, @NonNull ContentValues values, @NonNull String idCol) {
 		try {
 			db.beginTransaction();
