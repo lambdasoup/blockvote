@@ -45,6 +45,7 @@ public class AboutCardView extends CardView {
 		findViewById(R.id.about_button).setOnClickListener(this::onButtonClicked);
 	}
 
+	@SuppressWarnings("UnusedParameters")
 	private void onButtonClicked(View view) {
 		Intent intent = new Intent(Intent.ACTION_VIEW, parse("https://lambdasoup.github.io/blockvote/"));
 		getContext().startActivity(intent);
