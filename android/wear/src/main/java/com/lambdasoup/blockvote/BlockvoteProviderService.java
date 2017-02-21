@@ -16,14 +16,53 @@
 
 package com.lambdasoup.blockvote;
 
+import android.support.wearable.complications.ComplicationData;
 import android.support.wearable.complications.ComplicationManager;
 import android.support.wearable.complications.ComplicationProviderService;
+import android.support.wearable.complications.ComplicationText;
+import android.util.Log;
+
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.Locale;
 
 public class BlockvoteProviderService extends ComplicationProviderService {
 
+	private static final String TAG = BlockvoteProviderService.class.getSimpleName();
+
 	@Override
-	public void onComplicationUpdate(int i, int i1, ComplicationManager complicationManager) {
-		// TODO register FCM topic
-		// TODO set waiting graphics
+	public void onComplicationActivated(int complicationId, int type, ComplicationManager manager) {
+		Log.d(TAG, "onComplicationActivated: ");
+
+		// register FCM topic
+		FirebaseMessaging.getInstance().subscribeToTopic("v1");
+		if (BuildConfig.DEBUG) {
+			FirebaseMessaging.getInstance().subscribeToTopic("debug");
+		}
+	}
+
+	@Override
+	public void onComplicationDeactivated(int complicationId) {
+		Log.d(TAG, "onComplicationDeactivated: ");
+	}
+
+	@Override
+	public void onComplicationUpdate(int id, int type, ComplicationManager complicationManager) {
+		Log.d(TAG, "onComplicationUpdate:");
+
+		switch (type) {
+			case ComplicationData.TYPE_RANGED_VALUE:
+				float value = .235f;
+				ComplicationData data = new ComplicationData.Builder(ComplicationData.TYPE_RANGED_VALUE)
+						.setMinValue(0f)
+						.setMaxValue(1f)
+						.setValue(value)
+						.setShortText(ComplicationText.plainText(String.format(Locale.getDefault(), "%.1f%%", value * 100)))
+						.setShortTitle(ComplicationText.plainText("SW"))
+						.build();
+
+				complicationManager.updateComplicationData(id, data);
+				break;
+		}
 	}
 }

@@ -27,6 +27,9 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
+        jackOptions {
+            enabled true
+        }
     }
     buildTypes {
         release {
@@ -39,5 +42,6 @@ android {
 dependencies {
     compile project(":android:base")
     compile 'com.google.android.support:wearable:2.0.0'
-    compile 'com.google.android.gms:play-services-wearable:10.2.0'
 }
+
+apply plugin: 'com.google.gms.google-services'

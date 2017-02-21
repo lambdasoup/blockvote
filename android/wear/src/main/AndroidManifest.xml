@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!--
   ~ Copyright 2017 mh@lambdasoup.com
   ~
@@ -37,13 +38,21 @@
 
             <meta-data
                 android:name="android.support.wearable.complications.SUPPORTED_TYPES"
-                android:value="RANGED_VALUE,SHORT_TEXT,LONG_TEXT"/>
+                android:value="RANGED_VALUE"/>
             <meta-data
                 android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS"
                 android:value="0"/>
 
             <intent-filter>
                 <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".ComplicationUpdateService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.lambdasoup.blockvote.UPDATE"/>
             </intent-filter>
         </service>
 
