@@ -37,21 +37,14 @@
             </intent-filter>
         </activity>
 
-        <provider
-            android:name=".data.StatsProvider"
-            android:authorities="${applicationId}"
-            android:exported="false"
-            android:syncable="false"/>
 
         <service
-            android:name=".comms.BlockvoteFirebaseMessagingService"
+            android:name=".widget.AppWidgetUpdateService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.lambdasoup.blockvote.UPDATE"/>
             </intent-filter>
         </service>
-
-        <service android:name=".widget.AppWidgetUpdateService"/>
 
         <activity
             android:name=".main.AttributionActivity"

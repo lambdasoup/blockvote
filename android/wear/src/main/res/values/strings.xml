@@ -16,4 +16,5 @@
 
 <resources>
     <string name="app_name">Block Vote</string>
+    <string name="complications_provider_blockvote">Block Vote</string>
 </resources>

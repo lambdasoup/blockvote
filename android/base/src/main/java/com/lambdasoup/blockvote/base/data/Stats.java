@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lambdasoup.blockvote.data;
+package com.lambdasoup.blockvote.base.data;
 
 public class Stats {
 	public static final String ID         = "id";

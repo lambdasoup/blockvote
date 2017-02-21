@@ -31,7 +31,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.lambdasoup.blockvote.BuildConfig;
 import com.lambdasoup.blockvote.R;
-import com.lambdasoup.blockvote.data.StatsProvider;
+import com.lambdasoup.blockvote.base.data.StatsProvider;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;

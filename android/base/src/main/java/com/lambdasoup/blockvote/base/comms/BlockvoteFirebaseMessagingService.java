@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package com.lambdasoup.blockvote.comms;
+package com.lambdasoup.blockvote.base.comms;
 
 import android.content.ContentValues;
 import android.content.Intent;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.lambdasoup.blockvote.data.Id;
-import com.lambdasoup.blockvote.data.Stats;
-import com.lambdasoup.blockvote.data.StatsProvider;
-import com.lambdasoup.blockvote.widget.AppWidgetUpdateService;
+import com.lambdasoup.blockvote.base.data.Id;
+import com.lambdasoup.blockvote.base.data.Stats;
+import com.lambdasoup.blockvote.base.data.StatsProvider;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,7 +64,8 @@ public class BlockvoteFirebaseMessagingService extends FirebaseMessagingService 
 		}
 
 		// tell service to update all widgets
-		Intent intent = new Intent(this, AppWidgetUpdateService.class);
+		Intent intent = new Intent("com.lambdasoup.blockvote.UPDATE");
+		intent.setPackage(getPackageName());
 		startService(intent);
 	}
 

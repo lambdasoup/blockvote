@@ -14,27 +14,16 @@
  * limitations under the License.
  */
 
-package com.lambdasoup.blockvote.data;
+package com.lambdasoup.blockvote;
 
-import android.database.Cursor;
+import android.support.wearable.complications.ComplicationManager;
+import android.support.wearable.complications.ComplicationProviderService;
 
-@SuppressWarnings("SameParameterValue")
-public class CursorUtils {
+public class BlockvoteProviderService extends ComplicationProviderService {
 
-	private CursorUtils() {
-		// hide constructor
-	}
-
-	public static Id getId(Cursor cursor) {
-		String name = cursor.getString(cursor.getColumnIndex(Stats.ID));
-		return Id.valueOf(name);
-	}
-
-	public static float getFloat(Cursor cursor, String col) {
-		return cursor.getFloat(cursor.getColumnIndex(col));
-	}
-
-	public static String getString(Cursor cursor, String col) {
-		return cursor.getString(cursor.getColumnIndex(col));
+	@Override
+	public void onComplicationUpdate(int i, int i1, ComplicationManager complicationManager) {
+		// TODO register FCM topic
+		// TODO set waiting graphics
 	}
 }

@@ -27,8 +27,8 @@ import android.view.LayoutInflater;
 import android.widget.TextView;
 
 import com.lambdasoup.blockvote.R;
-import com.lambdasoup.blockvote.data.CursorUtils;
-import com.lambdasoup.blockvote.data.Stats;
+import com.lambdasoup.blockvote.base.data.CursorUtils;
+import com.lambdasoup.blockvote.base.data.Stats;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

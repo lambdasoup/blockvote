@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lambdasoup.blockvote.data;
+package com.lambdasoup.blockvote.base.data;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -29,11 +29,9 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.lambdasoup.blockvote.BuildConfig;
-
 public class StatsProvider extends ContentProvider {
 
-	private static final String AUTHORITY = BuildConfig.APPLICATION_ID;
+	private static final String AUTHORITY = "com.lambdasoup.blockvote";
 
 	public static final Uri CONTENT_URI = new Uri.Builder().authority(AUTHORITY).scheme("content").appendEncodedPath(Stats.TABLE_NAME).build();
 

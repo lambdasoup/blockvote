@@ -22,9 +22,9 @@ import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.lambdasoup.blockvote.data.Id;
-import com.lambdasoup.blockvote.data.Stats;
-import com.lambdasoup.blockvote.data.StatsProvider;
+import com.lambdasoup.blockvote.base.data.Id;
+import com.lambdasoup.blockvote.base.data.Stats;
+import com.lambdasoup.blockvote.base.data.StatsProvider;
 import com.lambdasoup.blockvote.main.MainActivity;
 
 import org.junit.Rule;

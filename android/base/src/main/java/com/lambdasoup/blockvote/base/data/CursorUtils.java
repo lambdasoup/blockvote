@@ -14,8 +14,27 @@
  * limitations under the License.
  */
 
-package com.lambdasoup.blockvote.data;
+package com.lambdasoup.blockvote.base.data;
 
-public enum Id {
-	SEGWIT, UNLIMITED
+import android.database.Cursor;
+
+@SuppressWarnings("SameParameterValue")
+public class CursorUtils {
+
+	private CursorUtils() {
+		// hide constructor
+	}
+
+	public static Id getId(Cursor cursor) {
+		String name = cursor.getString(cursor.getColumnIndex(Stats.ID));
+		return Id.valueOf(name);
+	}
+
+	public static float getFloat(Cursor cursor, String col) {
+		return cursor.getFloat(cursor.getColumnIndex(col));
+	}
+
+	public static String getString(Cursor cursor, String col) {
+		return cursor.getString(cursor.getColumnIndex(col));
+	}
 }
