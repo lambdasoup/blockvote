@@ -19,10 +19,10 @@ You can support development of Block Vote by donating Bitcoin to this address:
 You are welcome to collaborate in improving Block Vote.
 
 # Project structure
-This project has a frontend (Android app) and backend component (App Engine / Go).
+This project has frontends (Android apps) and backend component (App Engine / Go).
 
 ## Android app
-The Android client app is in ```app```
+The Android client apps is in ```android```. An Android Phone/Tablet and a Wear app are located in that directory.
 
 ## App Engine
 The App Engine backend is in ```backend```
