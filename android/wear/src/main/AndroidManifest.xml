@@ -26,7 +26,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@android:style/Theme.DeviceDefault"
+        android:theme="@style/Theme.AppCompat"
         tools:ignore="AllowBackup">
 
         <service
@@ -35,13 +35,15 @@
             android:icon="@mipmap/ic_launcher"
             android:label="@string/complications_provider_blockvote"
             android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
-
             <meta-data
                 android:name="android.support.wearable.complications.SUPPORTED_TYPES"
                 android:value="RANGED_VALUE"/>
             <meta-data
                 android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS"
                 android:value="0"/>
+            <meta-data
+                android:name="android.support.wearable.complications.PROVIDER_CONFIG_ACTION"
+                android:value="com.lambdasoup.blockvote.CONFIG"/>
 
             <intent-filter>
                 <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST"/>
@@ -56,6 +58,22 @@
             </intent-filter>
         </service>
 
+        <activity
+            android:name=".ConfigActivity">
+            <intent-filter>
+                <action android:name="com.lambdasoup.blockvote.CONFIG"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.support.wearable.complications.category.PROVIDER_CONFIG"/>
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:name=".ConfigProvider"
+            android:authorities="com.lambdasoup.blockvote.config"
+            android:enabled="true"
+            android:exported="false">
+        </provider>
     </application>
 
 </manifest>

@@ -39,8 +39,8 @@ android {
 
 dependencies {
     // google/firebase
-    compile 'com.google.firebase:firebase-messaging:10.0.1'
-    compile 'com.google.android.gms:play-services-base:10.0.1'
+    compile "com.google.firebase:firebase-messaging:$playServicesVersion"
+    compile "com.google.android.gms:play-services-base:$playServicesVersion"
 
     // testing
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {

@@ -41,6 +41,9 @@ android {
 
 dependencies {
     compile project(":android:base")
+
+    compile "com.android.support:design:$supportLibVersion"
+
     compile 'com.google.android.support:wearable:2.0.0'
 }
 

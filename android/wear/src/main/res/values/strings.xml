@@ -16,5 +16,25 @@
 
 <resources>
     <string name="app_name">Block Vote</string>
-    <string name="complications_provider_blockvote">Block Vote</string>
+    <string name="complications_provider_blockvote">Configure</string>
+    <string name="title_candidate">Select candidate</string>
+    <string name="title_period">Select period</string>
+    <string name="segwit_long">Segregated Witness</string>
+    <string name="unlimited_long">Bitcoin Unlimited</string>
+    <string name="period_d1">1 day</string>
+    <string name="period_d7">7 days</string>
+    <string name="period_d30">30 days</string>
+
+
+    <string-array name="candidates">
+        <item>@string/segwit_long</item>
+        <item>@string/unlimited_long</item>
+    </string-array>
+
+    <string-array name="periods">
+        <item>@string/period_d1</item>
+        <item>@string/period_d7</item>
+        <item>@string/period_d30</item>
+    </string-array>
+
 </resources>

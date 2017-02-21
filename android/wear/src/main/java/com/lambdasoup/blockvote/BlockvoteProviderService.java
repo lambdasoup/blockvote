@@ -16,13 +16,14 @@
 
 package com.lambdasoup.blockvote;
 
+import android.database.Cursor;
 import android.support.wearable.complications.ComplicationData;
 import android.support.wearable.complications.ComplicationManager;
 import android.support.wearable.complications.ComplicationProviderService;
 import android.support.wearable.complications.ComplicationText;
-import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.lambdasoup.blockvote.ConfigProvider.Config;
 
 import java.util.Locale;
 
@@ -32,8 +33,6 @@ public class BlockvoteProviderService extends ComplicationProviderService {
 
 	@Override
 	public void onComplicationActivated(int complicationId, int type, ComplicationManager manager) {
-		Log.d(TAG, "onComplicationActivated: ");
-
 		// register FCM topic
 		FirebaseMessaging.getInstance().subscribeToTopic("v1");
 		if (BuildConfig.DEBUG) {
@@ -42,13 +41,20 @@ public class BlockvoteProviderService extends ComplicationProviderService {
 	}
 
 	@Override
-	public void onComplicationDeactivated(int complicationId) {
-		Log.d(TAG, "onComplicationDeactivated: ");
-	}
-
-	@Override
 	public void onComplicationUpdate(int id, int type, ComplicationManager complicationManager) {
-		Log.d(TAG, "onComplicationUpdate:");
+		Cursor configCursor = getContentResolver().query(ConfigProvider.CONTENT_URI, null, Config.COMPLICATION_ID + " = " + id, null, null);
+		if (configCursor == null || !configCursor.moveToFirst()) {
+			ComplicationData data = new ComplicationData.Builder(ComplicationData.TYPE_RANGED_VALUE)
+					.setMinValue(0f)
+					.setMaxValue(1f)
+					.setValue(0f)
+					.setShortText(ComplicationText.plainText("--"))
+					.setShortTitle(ComplicationText.plainText("--"))
+					.build();
+			complicationManager.updateComplicationData(id, data);
+			return;
+		}
+		configCursor.close();
 
 		switch (type) {
 			case ComplicationData.TYPE_RANGED_VALUE:
