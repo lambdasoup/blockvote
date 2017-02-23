@@ -30,6 +30,10 @@
         android:theme="@style/Theme.AppCompat"
         tools:ignore="AllowBackup">
 
+        <meta-data
+            android:name="com.google.android.wearable.standalone"
+            android:value="true"/>
+
         <service
             android:name=".BlockvoteProviderService"
             android:enabled="true"
