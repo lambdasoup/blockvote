@@ -24,12 +24,15 @@ import android.support.wearable.complications.ComplicationText;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.lambdasoup.blockvote.ConfigProvider.Config;
+import com.lambdasoup.blockvote.ConfigProvider.Period;
+import com.lambdasoup.blockvote.base.data.CursorUtils;
+import com.lambdasoup.blockvote.base.data.Id;
+import com.lambdasoup.blockvote.base.data.Stats;
+import com.lambdasoup.blockvote.base.data.StatsProvider;
 
 import java.util.Locale;
 
 public class BlockvoteProviderService extends ComplicationProviderService {
-
-	private static final String TAG = BlockvoteProviderService.class.getSimpleName();
 
 	@Override
 	public void onComplicationActivated(int complicationId, int type, ComplicationManager manager) {
@@ -44,6 +47,15 @@ public class BlockvoteProviderService extends ComplicationProviderService {
 	public void onComplicationUpdate(int id, int type, ComplicationManager complicationManager) {
 		Cursor configCursor = getContentResolver().query(ConfigProvider.CONTENT_URI, null, Config.COMPLICATION_ID + " = " + id, null, null);
 		if (configCursor == null || !configCursor.moveToFirst()) {
+			complicationManager.noUpdateRequired(id);
+			return;
+		}
+		Id     configId     = CursorUtils.getEnum(configCursor, Config.CANDIDATE, Id.class);
+		Period configPeriod = CursorUtils.getEnum(configCursor, Config.PERIOD, Period.class);
+		configCursor.close();
+
+		Cursor statsCursor = getContentResolver().query(StatsProvider.CONTENT_URI, null, Stats.ID + " = ?", new String[]{configId.name()}, null);
+		if (statsCursor == null || !statsCursor.moveToFirst()) {
 			ComplicationData data = new ComplicationData.Builder(ComplicationData.TYPE_RANGED_VALUE)
 					.setMinValue(0f)
 					.setMaxValue(1f)
@@ -54,17 +66,43 @@ public class BlockvoteProviderService extends ComplicationProviderService {
 			complicationManager.updateComplicationData(id, data);
 			return;
 		}
-		configCursor.close();
+		float value;
+		switch (configPeriod) {
+			case D1:
+				value = CursorUtils.getFloat(statsCursor, Stats.D1);
+				break;
+			case D7:
+				value = CursorUtils.getFloat(statsCursor, Stats.D7);
+				break;
+			case D30:
+				value = CursorUtils.getFloat(statsCursor, Stats.D30);
+				break;
+			default:
+				throw new IllegalArgumentException("unknown period: " + configPeriod);
+		}
+		statsCursor.close();
+
+		String formattedValue = String.format(Locale.getDefault(), "%.1f%%", value * 100);
+		String label;
+		switch (configId) {
+			case SEGWIT:
+				label = getString(R.string.segwit_short);
+				break;
+			case UNLIMITED:
+				label = getString(R.string.unlimited_short);
+				break;
+			default:
+				throw new IllegalArgumentException("unknown candidate: " + configId);
+		}
 
 		switch (type) {
 			case ComplicationData.TYPE_RANGED_VALUE:
-				float value = .235f;
 				ComplicationData data = new ComplicationData.Builder(ComplicationData.TYPE_RANGED_VALUE)
 						.setMinValue(0f)
 						.setMaxValue(1f)
 						.setValue(value)
-						.setShortText(ComplicationText.plainText(String.format(Locale.getDefault(), "%.1f%%", value * 100)))
-						.setShortTitle(ComplicationText.plainText("SW"))
+						.setShortText(ComplicationText.plainText(formattedValue))
+						.setShortTitle(ComplicationText.plainText(label))
 						.build();
 
 				complicationManager.updateComplicationData(id, data);

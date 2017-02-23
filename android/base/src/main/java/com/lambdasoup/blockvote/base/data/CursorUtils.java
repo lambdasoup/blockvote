@@ -18,6 +18,8 @@ package com.lambdasoup.blockvote.base.data;
 
 import android.database.Cursor;
 
+import static java.lang.Enum.valueOf;
+
 @SuppressWarnings("SameParameterValue")
 public class CursorUtils {
 
@@ -25,9 +27,17 @@ public class CursorUtils {
 		// hide constructor
 	}
 
+	/**
+	 * @deprecated use {@link #getEnum(Cursor, String, Class)}
+	 */
+	@Deprecated
 	public static Id getId(Cursor cursor) {
-		String name = cursor.getString(cursor.getColumnIndex(Stats.ID));
-		return Id.valueOf(name);
+		return getEnum(cursor, Stats.ID, Id.class);
+	}
+
+	public static <T extends Enum<T>> T getEnum(Cursor cursor, String col, Class<T> cls) {
+		String name = getString(cursor, col);
+		return valueOf(cls, name);
 	}
 
 	public static float getFloat(Cursor cursor, String col) {

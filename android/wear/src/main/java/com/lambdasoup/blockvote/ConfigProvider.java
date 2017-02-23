@@ -60,8 +60,10 @@ public class ConfigProvider extends ContentProvider {
 
 	@Override
 	public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
-		return new SQLiteQueryBuilder().query(db, projection, selection, selectionArgs, null, null, sortOrder);
+		SQLiteDatabase     db           = dbHelper.getReadableDatabase();
+		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+		queryBuilder.setTables(Config.TABLE_NAME);
+		return queryBuilder.query(db, projection, selection, selectionArgs, null, null, sortOrder);
 	}
 
 	@Override

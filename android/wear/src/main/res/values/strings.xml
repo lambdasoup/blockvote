@@ -24,6 +24,8 @@
     <string name="period_d1">1 day</string>
     <string name="period_d7">7 days</string>
     <string name="period_d30">30 days</string>
+    <string name="unlimited_short">BU</string>
+    <string name="segwit_short">SW</string>
 
 
     <string-array name="candidates">

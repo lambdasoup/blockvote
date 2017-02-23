@@ -55,7 +55,7 @@ public class ConfigActivity extends Activity {
 		candidateView = (Button) findViewById(R.id.candidate);
 
 		// complication id comes from the intent
-		int complicationId = getIntent().getExtras().getInt(ComplicationProviderService.EXTRA_COMPLICATION_ID);
+		int complicationId = getIntent().getExtras().getInt(ComplicationProviderService.EXTRA_CONFIG_COMPLICATION_ID);
 		config.put(Config.COMPLICATION_ID, complicationId);
 
 		candidateView.setOnClickListener(this::onCandidateClicked);
