@@ -23,7 +23,7 @@
     <string name="head_d7">7 days</string>
     <string name="head_d30">30 days</string>
     <string name="stats_title">Current Statistics</string>
-    <string name="info_nodata">Stats will become available shortly. This app receives data in the background - you do not need to keep this app open.</string>
+    <string name="info_nodata">Stats are not available yet. You have to wait for up to one hour until the first update. This app receives data in the background - you do not need to keep this app open.</string>
     <string name="stats_info">These are the percentages of blocks signaling a certain scaling solution</string>
     <string name="menu_attributions">Open Source attributions</string>
     <string name="title_attributions">Open Source attributions</string>
