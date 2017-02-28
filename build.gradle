@@ -35,6 +35,24 @@ task clean(type: Delete) {
 }
 
 ext {
+    versionCodeMajor = 1
+    versionCodeMinor = 1
+    versionCodePatch = 4
     supportLibVersion = '25.2.0'
     playServicesVersion = '10.2.0'
+
+    makeVersionCode = { variant ->
+        def versionCode = 0
+
+        versionCode += variant
+        versionCode += versionCodePatch * 100
+        versionCode += versionCodeMinor * 10000
+        versionCode += versionCodeMajor * 1000000
+
+        return versionCode
+    }
+
+    makeVersionName = { ->
+        "$versionCodeMajor.$versionCodeMinor.$versionCodePatch"
+    }
 }
