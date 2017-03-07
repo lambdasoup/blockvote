@@ -21,8 +21,9 @@ type FCM struct {
 
 // FCMMessage is an FCM Message
 type FCMMessage struct {
-	To   string `json:"to"`
-	Data Stats  `json:"data"`
+	To          string `json:"to"`
+	Data        Stats  `json:"data"`
+	CollapseKey string `json:"collapse_key"`
 }
 
 // Reactor is a backend service which triggers follow-up events
@@ -53,7 +54,7 @@ func (r *AEReactor) SendFCMMessage(key string, topic string, s Stats) error {
 	}
 
 	client := urlfetch.Client(r.ctx)
-	m := FCMMessage{To: "/topics/" + topic, Data: s}
+	m := FCMMessage{To: "/topics/" + topic, Data: s, CollapseKey: topic + "_collapse"}
 	log.Printf("sending body %v", m)
 	bs, err := json.Marshal(m)
 	if err != nil {
