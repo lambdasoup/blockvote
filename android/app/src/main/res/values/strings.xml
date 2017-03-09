@@ -36,4 +36,8 @@
     <string name="widget_title">Block Vote</string>
     <string name="widget_empty">Waiting for data…</string>
     <string name="menu_privacy">Privacy Policy</string>
+    <string name="history_title">History</string>
+    <string name="history_error">Could not load history. Please check your network connection.</string>
+    <string name="try_again">Try again</string>
+    <string name="history_description">This chart shows the development of the 30 day averages during the time period shown in the upper right.</string>
 </resources>

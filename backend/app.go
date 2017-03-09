@@ -6,6 +6,9 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/golang/protobuf/proto"
+	"github.com/lambdasoup/blockvote/service"
+
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/log"
 )
@@ -15,6 +18,7 @@ func init() {
 	http.HandleFunc("/update-stats", updateStatsFunc)
 	http.HandleFunc("/stats", statsFunc)
 	http.HandleFunc("/stats-conversation", statsConversationFunc)
+	http.HandleFunc("/history", historyFunc)
 }
 
 // ConversationResponse is the response type for API.AI webhooks
@@ -22,6 +26,46 @@ type ConversationResponse struct {
 	Speech      string `json:"speech"`
 	DisplayText string `json:"displaytext"`
 	Source      string `json:"source"`
+}
+
+func historyFunc(w http.ResponseWriter, r *http.Request) {
+	ctx := appengine.NewContext(r)
+
+	db := &Datastore{ctx}
+	logger := &AELogger{ctx}
+
+	be := &Backend{db, nil, logger, nil}
+	ss, err := be.history()
+	if err != nil {
+		log.Errorf(ctx, err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+
+	h := &service.History{}
+	for _, s := range ss {
+		hs := &service.Stats{Votes: makeProtoVotes(s.Votes), Time: s.Timestamp.Format(time.RFC3339)}
+		h.Stats = append(h.Stats, hs)
+	}
+
+	b, err := proto.Marshal(h)
+	if err != nil {
+		log.Errorf(ctx, "cannot marshal %v", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+	w.Header().Add("cache-control", "max-age=3600")
+	w.Write(b)
+}
+
+func makeProtoVotes(xs map[string]Vote) map[string]*service.Vote {
+	ys := make(map[string]*service.Vote)
+	for k, v := range xs {
+		ys[k] = &service.Vote{D1: v.D1, D7: v.D7, D30: v.D30}
+	}
+	return ys
 }
 
 func statsFunc(w http.ResponseWriter, r *http.Request) {

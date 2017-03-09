@@ -60,6 +60,10 @@ func (be *Backend) latestStats() (Stats, error) {
 	return be.LatestStats()
 }
 
+func (be *Backend) history() ([]Stats, error) {
+	return be.GetStats(30)
+}
+
 func (be *Backend) updateStats(ts time.Time) error {
 	s := Stats{Timestamp: ts, Votes: make(map[string]Vote)}
 

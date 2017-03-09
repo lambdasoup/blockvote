@@ -15,10 +15,19 @@
  */
 
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.protobuf'
 
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
+
+    sourceSets {
+        main {
+            proto {
+                srcDir '../../service'
+            }
+        }
+    }
 
     defaultConfig {
         applicationId "com.lambdasoup.blockvote"
@@ -33,6 +42,24 @@ android {
     }
 }
 
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.2.0'
+    }
+    plugins {
+        javalite {
+            artifact = "com.google.protobuf:protoc-gen-javalite:3.0.0"
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.plugins {
+                javalite {}
+            }
+        }
+    }
+}
+
 dependencies {
     compile project(":android:base")
 
@@ -41,10 +68,17 @@ dependencies {
     compile "com.android.support:cardview-v7:$supportLibVersion"
     compile "com.android.support:recyclerview-v7:$supportLibVersion"
 
+    // protobuf
+    compile 'com.google.protobuf:protobuf-lite:3.0.0'
+
+    // http
+    compile 'com.squareup.okhttp3:okhttp:3.6.0'
+
     // testing
     testCompile 'junit:junit:4.12'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.google.code.findbugs', module: 'jsr305'
     })
 }
 
