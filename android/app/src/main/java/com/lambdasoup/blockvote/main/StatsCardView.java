@@ -28,13 +28,10 @@ import android.widget.TextView;
 
 import com.lambdasoup.blockvote.R;
 import com.lambdasoup.blockvote.base.data.CursorUtils;
+import com.lambdasoup.blockvote.base.data.Id;
 import com.lambdasoup.blockvote.base.data.Stats;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
 
 public class StatsCardView extends CardView {
 
@@ -96,7 +93,7 @@ public class StatsCardView extends CardView {
 		while (cursor.moveToNext()) {
 			setLastUpdated(CursorUtils.getString(cursor, Stats.TIME));
 
-			switch (CursorUtils.getId(cursor)) {
+			switch (CursorUtils.getEnum(cursor, Stats.ID, Id.class)) {
 				case SEGWIT:
 					setCell(R.id.segwit_d1, CursorUtils.getFloat(cursor, Stats.D1));
 					setCell(R.id.segwit_d7, CursorUtils.getFloat(cursor, Stats.D7));
@@ -113,19 +110,9 @@ public class StatsCardView extends CardView {
 	}
 
 	private void setLastUpdated(String string) {
-		// time comes in RFC3339 2006-01-02T15:04:05[...]
-		// this is cheapo-parsing, since we ignore the timezone. fortunately, this is our server and we know
-		// it'll be in UTC
-		try {
-			String           truncated = string.substring(0, 19);
-			SimpleDateFormat sdf       = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
-			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-			Date         parsed             = sdf.parse(truncated);
-			CharSequence relativeTimeString = DateUtils.getRelativeTimeSpanString(parsed.getTime());
-			timeView.setText(relativeTimeString);
-		} catch (ParseException e) {
-			throw new RuntimeException("cannot parse " + string);
-		}
+		Date         date               = StringUtils.parseRFC3339UTC(string);
+		CharSequence relativeTimeString = DateUtils.getRelativeTimeSpanString(date.getTime());
+		timeView.setText(relativeTimeString);
 	}
 
 	public void tick() {

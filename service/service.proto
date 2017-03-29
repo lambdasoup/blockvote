@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.lambdasoup.blockvote";
+option java_outer_classname = "BackendProto";
+
+package service;
+
+// Stats are the stats for one day
+message Stats {
+  map<string,Vote> votes = 1;
+  string time = 2;
+}
+
+// Vote are daily vote values for an option
+message Vote {
+  float d1 = 1;
+  float d7 = 2;
+  float d30 = 3;
+}
+
+// History are historical vote stats for one option
+message History {
+    repeated Stats stats = 1;
+}

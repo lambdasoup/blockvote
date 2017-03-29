@@ -22,6 +22,10 @@ func (db *TestDB) LatestStats() (Stats, error) {
 	return Stats{}, nil
 }
 
+func (db *TestDB) GetStats(n int) ([]Stats, error) {
+	return nil, nil
+}
+
 func (db *TestDB) SaveBlock(Block) error {
 	return nil
 }

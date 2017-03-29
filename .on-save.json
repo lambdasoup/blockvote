@@ -1,0 +1,8 @@
+[
+  {
+    "srcDir": "service",
+    "destDir": "service",
+    "files": "**/*.proto",
+    "command": "go generate service/generate.go"
+  }
+]

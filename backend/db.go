@@ -38,6 +38,9 @@ type DB interface {
 	// LatestStats returns the latest stats in the database
 	LatestStats() (Stats, error)
 
+	// GetStats returns the (up to) n latest stats
+	GetStats(int) ([]Stats, error)
+
 	// SaveStats saves the given stats into the db
 	SaveStats(Stats) error
 
@@ -113,37 +116,55 @@ func (ds *Datastore) LatestBlock() (b Block, err error) {
 
 // LatestStats returns the latest stats in the database
 func (ds *Datastore) LatestStats() (Stats, error) {
+	ss, err := ds.GetStats(1)
+
+	if err != nil {
+		return Stats{}, err
+	}
+
+	return ss[0], nil
+}
+
+// GetStats returns the n latest stats
+func (ds *Datastore) GetStats(n int) ([]Stats, error) {
 	ss := []Stats{}
 
+	// get stats/ancestor keys
 	ks, err := datastore.NewQuery("Stats").
-		Limit(1).
+		Limit(n).
 		Order("-Timestamp").
 		GetAll(ds.ctx, &ss)
 	if err != nil {
-		return Stats{}, err
+		return nil, err
 	}
 
 	if len(ss) == 0 {
-		return Stats{}, ErrNoStats
+		return nil, ErrNoStats
 	}
 
-	s := ss[0]
-	k := ks[0]
+	// create list of vote/child keys (sw0, bu0, sw1, bu1,...)
+	vks := []*datastore.Key{}
+	for _, k := range ks {
+		swk := datastore.NewKey(ds.ctx, "Vote", "segwit", 0, k)
+		buk := datastore.NewKey(ds.ctx, "Vote", "unlimited", 0, k)
+		vks = append(vks, swk, buk)
+	}
 
-	var vs []Vote
-	vks, err := datastore.NewQuery("Vote").
-		Ancestor(k).
-		GetAll(ds.ctx, &vs)
+	// get child values (sw0, bu0, sw1, bu1,...)
+	vs := make([]Vote, len(vks))
+	err = datastore.GetMulti(ds.ctx, vks, vs)
 	if err != nil {
-		return Stats{}, err
+		return nil, err
 	}
 
-	s.Votes = make(map[string]Vote)
-	for i, v := range vs {
-		s.Votes[vks[i].StringID()] = v
+	// fill stats with child data
+	for i := range ss {
+		ss[i].Votes = make(map[string]Vote)
+		ss[i].Votes["segwit"] = vs[2*i]
+		ss[i].Votes["unlimited"] = vs[2*i+1]
 	}
 
-	return s, nil
+	return ss, nil
 }
 
 // ForEachFrom calls the given method for each saves Block starting from the
