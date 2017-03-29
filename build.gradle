@@ -40,7 +40,7 @@ ext {
     versionCodeMinor = 1
     versionCodePatch = 4
     supportLibVersion = '25.3.1'
-    playServicesVersion = '10.2.0'
+    playServicesVersion = '10.2.1'
 
     makeVersionCode = { variant ->
         def versionCode = 0
