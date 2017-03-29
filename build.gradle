@@ -37,8 +37,8 @@ task clean(type: Delete) {
 
 ext {
     versionCodeMajor = 1
-    versionCodeMinor = 1
-    versionCodePatch = 4
+    versionCodeMinor = 2
+    versionCodePatch = 0
     supportLibVersion = '25.3.1'
     playServicesVersion = '10.2.1'
 
