@@ -18,18 +18,15 @@ apply plugin: 'com.android.application'
 
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 26
+    buildToolsVersion buildToolsVersion
 
     defaultConfig {
         applicationId "com.lambdasoup.blockvote"
         minSdkVersion 25
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode makeVersionCode(1)
         versionName makeVersionName()
-        jackOptions {
-            enabled true
-        }
     }
     buildTypes {
         release {
@@ -37,14 +34,24 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
-    compile project(":android:base")
+    implementation project(":android:base")
 
-    compile "com.android.support:design:$supportLibVersion"
+    // google/firebase
+    implementation "com.google.firebase:firebase-messaging:$playServicesVersion"
+    implementation "com.google.android.gms:play-services-base:$playServicesVersion"
 
-    compile 'com.google.android.support:wearable:2.0.0'
+
+    // android
+    implementation "com.android.support:design:$supportLibVersion"
+    provided 'com.google.android.wearable:wearable:2.0.3'
+    implementation 'com.google.android.support:wearable:2.0.3'
 }
 
 apply plugin: 'com.google.gms.google-services'

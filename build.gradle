@@ -16,18 +16,27 @@
 
 buildscript {
     repositories {
+        mavenLocal()
         jcenter()
+        maven {
+            url 'https://maven.google.com'
+            // Alternative URL is 'https://dl.google.com/dl/android/maven2/'
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.0-alpha3'
-        classpath "com.google.protobuf:protobuf-gradle-plugin:0.8.0"
-        classpath 'com.google.gms:google-services:3.0.0'
+        classpath "com.google.protobuf:protobuf-gradle-plugin:0.8.2-SNAPSHOT"
+        classpath 'com.google.gms:google-services:3.1.0'
     }
 }
 
 allprojects {
     repositories {
         jcenter()
+        maven {
+            url 'https://maven.google.com'
+            // Alternative URL is 'https://dl.google.com/dl/android/maven2/'
+        }
     }
 }
 
@@ -39,8 +48,11 @@ ext {
     versionCodeMajor = 1
     versionCodeMinor = 2
     versionCodePatch = 0
-    supportLibVersion = '25.3.1'
-    playServicesVersion = '10.2.1'
+
+    buildToolsVersion = '26.0.0-rc2'
+    supportLibVersion = '26.0.0-beta2'
+    playServicesVersion = '11.0.0'
+    archComponentsVersion = '1.0.0-alpha2'
 
     makeVersionCode = { variant ->
         def versionCode = 0
