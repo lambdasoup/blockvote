@@ -10,3 +10,7 @@
 /logo.svg.png
 /feature.svg.png
 *.apk
+.idea/gradle.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
