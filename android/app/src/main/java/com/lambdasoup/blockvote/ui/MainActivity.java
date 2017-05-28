@@ -43,11 +43,6 @@ import static android.net.Uri.parse;
 
 public class MainActivity extends LifecycleActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-	/* ticker */
-	private final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
-	private ScheduledFuture<?> tickFuture;
-	private final Runnable tickTask = () -> runOnUiThread(this::onTick);
-
 	/* views */
 	private HistoryCardView historyView;
 	private StatsCardView      statsView;
@@ -79,6 +74,9 @@ public class MainActivity extends LifecycleActivity implements LoaderManager.Loa
 		viewModel.observeData(this, this::onHistoryUpdated);
 		viewModel.loadHistory();
 
+		// bind ticker
+		Ticker.with(this).bind(this::onTick);
+
 		// load stats
 		getSupportLoaderManager().initLoader(0, null, this);
 	}
@@ -101,23 +99,8 @@ public class MainActivity extends LifecycleActivity implements LoaderManager.Loa
 		viewModel.loadHistory();
 	}
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-
-		tickFuture = executor.scheduleAtFixedRate(tickTask, 0, 1, TimeUnit.SECONDS);
-	}
-
-	@UiThread
 	private void onTick() {
 		statsView.tick();
-	}
-
-	@Override
-	protected void onPause() {
-		tickFuture.cancel(false);
-
-		super.onPause();
 	}
 
 	@Override
