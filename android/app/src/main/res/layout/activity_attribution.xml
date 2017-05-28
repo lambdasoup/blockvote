@@ -23,6 +23,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutManager="LinearLayoutManager"
-    tools:context="com.lambdasoup.blockvote.main.AttributionActivity"
+    tools:context="com.lambdasoup.blockvote.ui.AttributionActivity"
     tools:listitem="@layout/viewholder_attribution"/>
 

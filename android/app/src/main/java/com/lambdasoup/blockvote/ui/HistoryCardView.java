@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lambdasoup.blockvote.main;
+package com.lambdasoup.blockvote.ui;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.ViewAnimator;
 
 import com.lambdasoup.blockvote.R;
+import com.lambdasoup.blockvote.viewmodel.MainViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -69,7 +70,7 @@ public class HistoryCardView extends CardView implements View.OnClickListener {
 		show(CHILD_ERROR);
 	}
 
-	public void setData(HistoryView.Data data) {
+	public void setData(MainViewModel.Data data) {
 		intervalView.setVisibility(VISIBLE);
 		String formattedStart    = SimpleDateFormat.getDateInstance().format(data.start);
 		String formattedEnd      = SimpleDateFormat.getDateInstance().format(data.end);

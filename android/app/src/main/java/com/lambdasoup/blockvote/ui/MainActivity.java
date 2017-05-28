@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-package com.lambdasoup.blockvote.main;
+package com.lambdasoup.blockvote.ui;
 
+import android.arch.lifecycle.LifecycleActivity;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -23,44 +25,35 @@ import android.support.annotation.UiThread;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.lambdasoup.blockvote.BuildConfig;
-import com.lambdasoup.blockvote.History;
 import com.lambdasoup.blockvote.R;
-import com.lambdasoup.blockvote.Stats;
-import com.lambdasoup.blockvote.Vote;
 import com.lambdasoup.blockvote.base.data.StatsProvider;
+import com.lambdasoup.blockvote.viewmodel.MainViewModel;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.Cache;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-
 import static android.net.Uri.parse;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MainActivity extends LifecycleActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
+	/* ticker */
 	private final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
 	private ScheduledFuture<?> tickFuture;
-	private StatsCardView      statsView;
 	private final Runnable tickTask = () -> runOnUiThread(this::onTick);
-	private HistoryCardView historyView;
 
-	private OkHttpClient httpClient;
+	/* views */
+	private HistoryCardView historyView;
+	private StatsCardView      statsView;
+
+	/* viewmodel */
+	private MainViewModel viewModel;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,105 +67,39 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 			FirebaseMessaging.getInstance().subscribeToTopic("debug");
 		}
 
-		// build http client
-		Cache cache = new Cache(getCacheDir(), 1024 * 1024);
-		httpClient = new OkHttpClient.Builder().cache(cache).build();
-
 		// bind views
-		statsView = (StatsCardView) findViewById(R.id.stats);
-		historyView = (HistoryCardView) findViewById(R.id.card_history);
+		statsView = findViewById(R.id.stats);
+		historyView = findViewById(R.id.card_history);
 		historyView.setOnRetryListener(this::onRetryHistory);
+
+		// get viewmodel
+		viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+		// TODO get rid of this line?
+		viewModel.init(this);
+		viewModel.observeData(this, this::onHistoryUpdated);
+		viewModel.loadHistory();
 
 		// load stats
 		getSupportLoaderManager().initLoader(0, null, this);
 	}
 
+	private void onHistoryUpdated(MainViewModel.TransientData data) {
+		switch (data.state) {
+			case PROGRESS:
+				historyView.setProgress();
+				break;
+			case DATA:
+				historyView.setData(data.data);
+				break;
+			case ERROR:
+				historyView.setProgress();
+				break;
+		}
+	}
+
 	private void onRetryHistory() {
-		loadHistory();
+		viewModel.loadHistory();
 	}
-
-	@Override
-	protected void onStart() {
-		super.onStart();
-
-		// load history from network
-		loadHistory();
-	}
-
-	private void loadHistory() {
-		historyView.setProgress();
-
-		String url = getString(R.string.backend_history_url);
-		Request request = new Request.Builder()
-				.url(url)
-				.build();
-
-		httpClient.newCall(request).enqueue(new Callback() {
-			@Override
-			public void onFailure(Call call, IOException e) {
-				runOnUiThread(() -> onHistoryLoadError());
-			}
-
-			@Override
-			public void onResponse(Call call, Response response) throws IOException {
-				if (!response.isSuccessful()) {
-					runOnUiThread(() -> onHistoryLoadError());
-					return;
-				}
-
-				History history = History.parseFrom(response.body().byteStream());
-
-				int     count = history.getStatsCount();
-				Date    start = StringUtils.parseRFC3339UTC(history.getStats(count - 1).getTime());
-				Date    end   = StringUtils.parseRFC3339UTC(history.getStats(0).getTime());
-				float[] sw1d  = new float[count];
-				float[] sw7d  = new float[count];
-				float[] sw30d = new float[count];
-				float[] bu1d  = new float[count];
-				float[] bu7d  = new float[count];
-				float[] bu30d = new float[count];
-				for (int i = 0; i < count; i++) {
-					Stats stats = history.getStats(i);
-					for (Map.Entry<String, Vote> entry : stats.getVotesMap().entrySet()) {
-						// reverse order
-						int pos = count - i - 1;
-						switch (entry.getKey()) {
-							case "unlimited":
-								bu1d[pos] = entry.getValue().getD1();
-								bu7d[pos] = entry.getValue().getD7();
-								bu30d[pos] = entry.getValue().getD30();
-								break;
-
-							case "segwit":
-								sw1d[pos] = entry.getValue().getD1();
-								sw7d[pos] = entry.getValue().getD7();
-								sw30d[pos] = entry.getValue().getD30();
-								break;
-						}
-					}
-				}
-
-				runOnUiThread(() -> onHistoryLoaded(new HistoryView.Data(start, end, sw1d, sw7d, sw30d, bu1d, bu7d, bu30d)));
-			}
-		});
-	}
-
-	private void onHistoryLoaded(HistoryView.Data data) {
-		if (isDestroyed()) {
-			return;
-		}
-
-		historyView.setData(data);
-	}
-
-	private void onHistoryLoadError() {
-		if (isDestroyed()) {
-			return;
-		}
-
-		historyView.setError();
-	}
-
 
 	@Override
 	protected void onResume() {
@@ -191,12 +118,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 		tickFuture.cancel(false);
 
 		super.onPause();
-	}
-
-	@Override
-	protected void onDestroy() {
-		httpClient.dispatcher().cancelAll();
-		super.onDestroy();
 	}
 
 	@Override

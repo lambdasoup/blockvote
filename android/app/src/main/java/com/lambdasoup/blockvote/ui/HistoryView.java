@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lambdasoup.blockvote.main;
+package com.lambdasoup.blockvote.ui;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -30,6 +30,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.lambdasoup.blockvote.R;
+import com.lambdasoup.blockvote.viewmodel.MainViewModel;
 
 import java.util.Date;
 import java.util.Locale;
@@ -69,8 +70,8 @@ public class HistoryView extends View {
 	private final int padding;
 	private final RectF src = new RectF();
 	private final RectF dst = new RectF();
-	private final int  strokeWidth;
-	private       Data data;
+	private final int                strokeWidth;
+	private       MainViewModel.Data data;
 	private float labelWidth = 0f;
 	private int chartHeight;
 
@@ -125,7 +126,7 @@ public class HistoryView extends View {
 		labelWidth = Layout.getDesiredWidth("100%", yLabelTextPaint);
 
 		if (isInEditMode()) {
-			setData(new Data(
+			setData(new MainViewModel.Data(
 					new Date(), new Date(), new float[]{0.1f, 0.2f, 0.15f, 0.18f},
 							new float[]{0.3f, 0.5f, 0.1f, 0.5f},
 							new float[]{0.3f, 0.5f, 0.1f, 0.5f},
@@ -188,7 +189,7 @@ public class HistoryView extends View {
 		path.transform(m);
 	}
 
-	public void setData(Data data) {
+	public void setData(MainViewModel.Data data) {
 		this.data = data;
 		calcPaths();
 		invalidate();
@@ -267,27 +268,5 @@ public class HistoryView extends View {
 
 	private enum Interval {
 		D1, D7, D30
-	}
-
-	static class Data {
-		final         Date    start;
-		final         Date    end;
-		private final float[] sw1d;
-		private final float[] sw7d;
-		private final float[] sw30d;
-		private final float[] bu1d;
-		private final float[] bu7d;
-		private final float[] bu30d;
-
-		Data(Date start, Date end, float[] sw1d, float[] sw7d, float[] sw30d, float[] bu1d, float[] bu7d, float[] bu30d) {
-			this.start = start;
-			this.end = end;
-			this.sw1d = sw1d;
-			this.sw7d = sw7d;
-			this.sw30d = sw30d;
-			this.bu1d = bu1d;
-			this.bu7d = bu7d;
-			this.bu30d = bu30d;
-		}
 	}
 }

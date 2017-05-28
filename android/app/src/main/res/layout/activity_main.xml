@@ -26,9 +26,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        tools:context="com.lambdasoup.blockvote.main.MainActivity">
+        tools:context="com.lambdasoup.blockvote.ui.MainActivity">
 
-        <com.lambdasoup.blockvote.main.StatsCardView
+        <com.lambdasoup.blockvote.ui.StatsCardView
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:id="@+id/stats"
             android:layout_width="match_parent"
@@ -42,7 +42,7 @@
             card_view:contentPaddingRight="@dimen/card_horizontal_padding"
             card_view:contentPaddingTop="@dimen/card_vertical_padding"/>
 
-        <com.lambdasoup.blockvote.main.HistoryCardView
+        <com.lambdasoup.blockvote.ui.HistoryCardView
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:id="@+id/card_history"
             android:layout_width="match_parent"
@@ -57,7 +57,7 @@
             card_view:contentPaddingRight="@dimen/card_horizontal_padding"
             card_view:contentPaddingTop="@dimen/card_vertical_padding"/>
 
-        <com.lambdasoup.blockvote.main.AboutCardView
+        <com.lambdasoup.blockvote.ui.AboutCardView
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:id="@+id/about"
             android:layout_width="match_parent"

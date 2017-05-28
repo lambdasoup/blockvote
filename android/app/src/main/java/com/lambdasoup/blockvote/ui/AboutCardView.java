@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lambdasoup.blockvote.main;
+package com.lambdasoup.blockvote.ui;
 
 import android.content.Context;
 import android.content.Intent;

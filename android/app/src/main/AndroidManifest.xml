@@ -28,7 +28,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
         <activity
-            android:name=".main.MainActivity"
+            android:name=".ui.MainActivity"
             android:theme="@style/AppTheme.Dashboard">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -46,7 +46,7 @@
         </service>
 
         <activity
-            android:name=".main.AttributionActivity"
+            android:name=".ui.AttributionActivity"
             android:label="@string/title_attributions">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>

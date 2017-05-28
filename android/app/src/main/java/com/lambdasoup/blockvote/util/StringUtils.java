@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lambdasoup.blockvote.main;
+package com.lambdasoup.blockvote.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-class StringUtils {
+public class StringUtils {
 
 	private StringUtils() {
 		// hide constructor for utility classes
@@ -33,7 +33,7 @@ class StringUtils {
 	 * this is cheapo-parsing, since we ignore the timezone. fortunately, we use our server and we know
 	 * it'll be in UTC
 	 */
-	static Date parseRFC3339UTC(String s) {
+	public static Date parseRFC3339UTC(String s) {
 		try {
 			String           truncated = s.substring(0, 19);
 			SimpleDateFormat sdf       = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);

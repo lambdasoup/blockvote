@@ -25,7 +25,7 @@ import android.support.test.runner.AndroidJUnit4;
 import com.lambdasoup.blockvote.base.data.Id;
 import com.lambdasoup.blockvote.base.data.Stats;
 import com.lambdasoup.blockvote.base.data.StatsProvider;
-import com.lambdasoup.blockvote.main.MainActivity;
+import com.lambdasoup.blockvote.ui.MainActivity;
 
 import org.junit.Rule;
 import org.junit.Test;

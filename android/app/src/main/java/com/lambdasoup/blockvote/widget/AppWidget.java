@@ -24,7 +24,7 @@ import android.content.Intent;
 import android.widget.RemoteViews;
 
 import com.lambdasoup.blockvote.R;
-import com.lambdasoup.blockvote.main.MainActivity;
+import com.lambdasoup.blockvote.ui.MainActivity;
 
 public class AppWidget extends AppWidgetProvider {
 

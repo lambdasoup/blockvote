@@ -30,7 +30,7 @@ import android.widget.RemoteViews;
 import com.lambdasoup.blockvote.R;
 import com.lambdasoup.blockvote.base.data.Stats;
 import com.lambdasoup.blockvote.base.data.StatsProvider;
-import com.lambdasoup.blockvote.main.MainActivity;
+import com.lambdasoup.blockvote.ui.MainActivity;
 
 import static com.lambdasoup.blockvote.base.data.CursorUtils.getFloat;
 import static com.lambdasoup.blockvote.base.data.CursorUtils.getId;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.lambdasoup.blockvote.main;
+package com.lambdasoup.blockvote.ui;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -30,6 +30,7 @@ import com.lambdasoup.blockvote.R;
 import com.lambdasoup.blockvote.base.data.CursorUtils;
 import com.lambdasoup.blockvote.base.data.Id;
 import com.lambdasoup.blockvote.base.data.Stats;
+import com.lambdasoup.blockvote.util.StringUtils;
 
 import java.util.Date;
 
