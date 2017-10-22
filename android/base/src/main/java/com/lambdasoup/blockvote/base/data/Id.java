@@ -17,5 +17,5 @@
 package com.lambdasoup.blockvote.base.data;
 
 public enum Id {
-	SEGWIT, UNLIMITED
+	SEGWIT, EC
 }

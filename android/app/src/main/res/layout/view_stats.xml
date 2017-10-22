@@ -120,19 +120,19 @@
             <TableRow>
 
                 <TextView
-                    android:text="@string/name_unlimited"
+                    android:text="@string/name_ec"
                     android:textStyle="bold"/>
 
                 <TextView
-                    android:id="@+id/unlimited_d1"
+                    android:id="@+id/ec_d1"
                     tools:text="41.1%"/>
 
                 <TextView
-                    android:id="@+id/unlimited_d7"
+                    android:id="@+id/ec_d7"
                     tools:text="32.5%"/>
 
                 <TextView
-                    android:id="@+id/unlimited_d30"
+                    android:id="@+id/ec_d30"
                     tools:text="26.6%"/>
 
             </TableRow>

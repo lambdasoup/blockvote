@@ -27,14 +27,6 @@ public class CursorUtils {
 		// hide constructor
 	}
 
-	/**
-	 * @deprecated use {@link #getEnum(Cursor, String, Class)}
-	 */
-	@Deprecated
-	public static Id getId(Cursor cursor) {
-		return getEnum(cursor, Stats.ID, Id.class);
-	}
-
 	public static <T extends Enum<T>> T getEnum(Cursor cursor, String col, Class<T> cls) {
 		String name = getString(cursor, col);
 		return valueOf(cls, name);

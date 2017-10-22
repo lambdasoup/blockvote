@@ -28,12 +28,13 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.lambdasoup.blockvote.R;
+import com.lambdasoup.blockvote.base.data.Id;
 import com.lambdasoup.blockvote.base.data.Stats;
 import com.lambdasoup.blockvote.base.data.StatsProvider;
 import com.lambdasoup.blockvote.ui.MainActivity;
 
+import static com.lambdasoup.blockvote.base.data.CursorUtils.getEnum;
 import static com.lambdasoup.blockvote.base.data.CursorUtils.getFloat;
-import static com.lambdasoup.blockvote.base.data.CursorUtils.getId;
 import static java.lang.String.format;
 
 public class AppWidgetUpdateService extends IntentService {
@@ -60,13 +61,13 @@ public class AppWidgetUpdateService extends IntentService {
 
 			cursor.moveToPrevious();
 			while (cursor.moveToNext()) {
-				switch (getId(cursor)) {
+				switch (getEnum(cursor, Stats.ID, Id.class)) {
 					case SEGWIT:
 						setCell(views, R.id.appwidget_value_sw, getFloat(cursor, Stats.D1));
 						break;
 
-					case UNLIMITED:
-						setCell(views, R.id.appwidget_value_bu, getFloat(cursor, Stats.D1));
+					case EC:
+						setCell(views, R.id.appwidget_value_ec, getFloat(cursor, Stats.D1));
 						break;
 				}
 			}

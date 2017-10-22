@@ -154,7 +154,7 @@ func updateStatsFunc(w http.ResponseWriter, r *http.Request) {
 
 	err := b.updateStats(time.Now())
 	if err != nil {
-		log.Errorf(ctx, err.Error())
+		log.Errorf(ctx, "could not update stats: %v", err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
 	}

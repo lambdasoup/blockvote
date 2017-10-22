@@ -73,34 +73,34 @@ func (be *Backend) updateStats(ts time.Time) error {
 
 	total := make([]int, 3)
 	swcs := make([]int, 3)
-	bucs := make([]int, 3)
+	eccs := make([]int, 3)
 
 	err := be.ForEachFrom(d30ts, func(b Block) {
 		total[0]++
-		if hasSegWitSignal(b) {
+		if hasSWSignal(b) {
 			swcs[0]++
 		}
-		if hasUnlimitedSignal(b) {
-			bucs[0]++
+		if hasECSignal(b) {
+			eccs[0]++
 		}
 
 		if b.Timestamp.After(d7ts) {
 			total[1]++
-			if hasSegWitSignal(b) {
+			if hasSWSignal(b) {
 				swcs[1]++
 			}
-			if hasUnlimitedSignal(b) {
-				bucs[1]++
+			if hasECSignal(b) {
+				eccs[1]++
 			}
 		}
 
 		if b.Timestamp.After(d1ts) {
 			total[2]++
-			if hasSegWitSignal(b) {
+			if hasSWSignal(b) {
 				swcs[2]++
 			}
-			if hasUnlimitedSignal(b) {
-				bucs[2]++
+			if hasECSignal(b) {
+				eccs[2]++
 			}
 		}
 	})
@@ -109,7 +109,8 @@ func (be *Backend) updateStats(ts time.Time) error {
 	}
 
 	s.Votes["segwit"] = makeVote(swcs, total)
-	s.Votes["unlimited"] = makeVote(bucs, total)
+	s.Votes["ec"] = makeVote(eccs, total)
+	s.Votes["unlimited"] = s.Votes["ec"]
 
 	err = be.SaveStats(s)
 	if err != nil {
@@ -126,11 +127,11 @@ func (be *Backend) updateStats(ts time.Time) error {
 	return err
 }
 
-func hasSegWitSignal(b Block) bool {
+func hasSWSignal(b Block) bool {
 	return (0x00000002 & b.Version) > 0
 }
 
-func hasUnlimitedSignal(b Block) bool {
+func hasECSignal(b Block) bool {
 	bs, err := hex.DecodeString(b.Script)
 	if err != nil {
 		panic(fmt.Sprintf("could not decode script in block %v", b))

@@ -66,11 +66,16 @@ func (r *AEReactor) SendFCMMessage(key string, topic string, s Stats) error {
 	}
 
 	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("Accept", "application/json")
 	req.Header.Add("Authorization", "key="+key)
 
 	res, err := client.Do(req)
 	if err != nil {
 		return err
+	}
+
+	if res.StatusCode != http.StatusOK {
+		return fmt.Errorf("could not create fcm message: %v", res)
 	}
 
 	body := struct {
@@ -79,7 +84,7 @@ func (r *AEReactor) SendFCMMessage(key string, topic string, s Stats) error {
 	}{}
 	err = json.NewDecoder(res.Body).Decode(&body)
 	if err != nil {
-		return err
+		return fmt.Errorf("could not decode body: %v, (%v)", res, err)
 	}
 
 	return nil

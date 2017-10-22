@@ -151,7 +151,7 @@ func TestHasSegWitSignal(tt *testing.T) {
 	}
 
 	for _, tc := range tcs {
-		if hasSegWitSignal(tc.block) != tc.expected {
+		if hasSWSignal(tc.block) != tc.expected {
 			tt.Error("segwit test failed")
 		}
 	}
@@ -169,7 +169,7 @@ func TestHasUnlimitedSignal(tt *testing.T) {
 	}
 
 	for _, tc := range tcs {
-		if hasUnlimitedSignal(tc.block) != tc.expected {
+		if hasECSignal(tc.block) != tc.expected {
 			tt.Error("unlimited test failed")
 		}
 	}

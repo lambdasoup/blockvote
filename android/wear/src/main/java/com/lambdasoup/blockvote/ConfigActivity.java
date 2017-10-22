@@ -35,7 +35,7 @@ public class ConfigActivity extends Activity {
 	private final static String TAG = ConfigActivity.class.getSimpleName();
 
 	/* keep in sync with R.array.* */
-	private final static Id[]     candidates = {Id.SEGWIT, Id.UNLIMITED};
+	private final static Id[]     candidates = {Id.SEGWIT, Id.EC};
 	private final static Period[] periods    = {Period.D1, Period.D7, Period.D30};
 
 	private final ContentValues config = new ContentValues();
@@ -50,12 +50,17 @@ public class ConfigActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_config);
 
-		fab = (FloatingActionButton) findViewById(R.id.confirm);
-		periodView = (Button) findViewById(R.id.period);
-		candidateView = (Button) findViewById(R.id.candidate);
+		fab = findViewById(R.id.confirm);
+		periodView = findViewById(R.id.period);
+		candidateView = findViewById(R.id.candidate);
+
+		Bundle extras = getIntent().getExtras();
+		if (extras == null) {
+			throw new NullPointerException("extras were null");
+		}
 
 		// complication id comes from the intent
-		int complicationId = getIntent().getExtras().getInt(ComplicationProviderService.EXTRA_CONFIG_COMPLICATION_ID);
+		int complicationId = extras.getInt(ComplicationProviderService.EXTRA_CONFIG_COMPLICATION_ID);
 		config.put(Config.COMPLICATION_ID, complicationId);
 
 		candidateView.setOnClickListener(this::onCandidateClicked);
@@ -94,8 +99,8 @@ public class ConfigActivity extends Activity {
 			case SEGWIT:
 				candidateView.setText(R.string.segwit_long);
 				break;
-			case UNLIMITED:
-				candidateView.setText(R.string.unlimited_long);
+			case EC:
+				candidateView.setText(R.string.ec_long);
 				break;
 		}
 

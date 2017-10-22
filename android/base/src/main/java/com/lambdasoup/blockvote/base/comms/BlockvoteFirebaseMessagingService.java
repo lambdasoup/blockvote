@@ -53,10 +53,10 @@ public class BlockvoteFirebaseMessagingService extends FirebaseMessagingService 
 		try {
 			JSONObject      jsonObject    = new JSONObject(votes);
 			JSONObject      segwit        = jsonObject.getJSONObject("segwit");
-			JSONObject      unlimited     = jsonObject.getJSONObject("unlimited");
+			JSONObject      ec            = jsonObject.getJSONObject("ec");
 			ContentValues   cvSegwit      = fromJson(segwit, Id.SEGWIT.name(), time);
-			ContentValues   cvUnlimited   = fromJson(unlimited, Id.UNLIMITED.name(), time);
-			ContentValues[] contentValues = {cvSegwit, cvUnlimited};
+			ContentValues   cvEC          = fromJson(ec, Id.EC.name(), time);
+			ContentValues[] contentValues = {cvSegwit, cvEC};
 			getContentResolver().bulkInsert(StatsProvider.CONTENT_URI, contentValues);
 
 		} catch (JSONException e) {

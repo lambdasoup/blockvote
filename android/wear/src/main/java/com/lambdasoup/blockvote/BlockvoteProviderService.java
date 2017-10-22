@@ -88,8 +88,8 @@ public class BlockvoteProviderService extends ComplicationProviderService {
 			case SEGWIT:
 				label = getString(R.string.segwit_short);
 				break;
-			case UNLIMITED:
-				label = getString(R.string.unlimited_short);
+			case EC:
+				label = getString(R.string.ec_short);
 				break;
 			default:
 				throw new IllegalArgumentException("unknown candidate: " + configId);

@@ -53,16 +53,16 @@ public class StatsCardView extends CardView {
 		super(context, attrs, defStyleAttr);
 
 		LayoutInflater.from(context).inflate(R.layout.view_stats, this);
-		timeView = (TextView) findViewById(R.id.time);
+		timeView = findViewById(R.id.time);
 
 		if (isInEditMode()) {
 			setEmpty(false);
 			setCell(R.id.segwit_d1, 21.4f);
 			setCell(R.id.segwit_d7, 20.2f);
 			setCell(R.id.segwit_d30, 24.8f);
-			setCell(R.id.unlimited_d1, 31.1f);
-			setCell(R.id.unlimited_d7, 33.3f);
-			setCell(R.id.unlimited_d30, 37.9f);
+			setCell(R.id.ec_d1, 31.1f);
+			setCell(R.id.ec_d7, 33.3f);
+			setCell(R.id.ec_d30, 37.9f);
 		}
 	}
 
@@ -74,7 +74,7 @@ public class StatsCardView extends CardView {
 
 	private void setCell(@IdRes int viewId, float v) {
 		String   formatted = getResources().getString(R.string.formatted, v * 100);
-		TextView view      = (TextView) findViewById(viewId);
+		TextView view      = findViewById(viewId);
 		view.setText(formatted);
 	}
 
@@ -101,10 +101,10 @@ public class StatsCardView extends CardView {
 					setCell(R.id.segwit_d30, CursorUtils.getFloat(cursor, Stats.D30));
 					break;
 
-				case UNLIMITED:
-					setCell(R.id.unlimited_d1, CursorUtils.getFloat(cursor, Stats.D1));
-					setCell(R.id.unlimited_d7, CursorUtils.getFloat(cursor, Stats.D7));
-					setCell(R.id.unlimited_d30, CursorUtils.getFloat(cursor, Stats.D30));
+				case EC:
+					setCell(R.id.ec_d1, CursorUtils.getFloat(cursor, Stats.D1));
+					setCell(R.id.ec_d7, CursorUtils.getFloat(cursor, Stats.D7));
+					setCell(R.id.ec_d30, CursorUtils.getFloat(cursor, Stats.D30));
 					break;
 			}
 		}
