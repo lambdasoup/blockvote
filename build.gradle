@@ -43,7 +43,7 @@ task clean(type: Delete) {
 
 ext {
     versionCodeMajor = 1
-    versionCodeMinor = 2
+    versionCodeMinor = 3
     versionCodePatch = 0
 
     buildToolsVersion = '26.0.2'
