@@ -122,7 +122,7 @@ public class StatsProvider extends ContentProvider {
 
 	static class DbHelper extends SQLiteOpenHelper {
 
-		static final int    DATABASE_VERSION = 3;
+		static final int    DATABASE_VERSION = 4;
 		static final String DATABASE_NAME    = "stats.db";
 
 // @formatter:off

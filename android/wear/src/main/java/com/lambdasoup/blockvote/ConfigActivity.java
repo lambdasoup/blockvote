@@ -32,10 +32,8 @@ import com.lambdasoup.blockvote.base.data.Id;
 
 public class ConfigActivity extends Activity {
 
-	private final static String TAG = ConfigActivity.class.getSimpleName();
-
 	/* keep in sync with R.array.* */
-	private final static Id[]     candidates = {Id.SEGWIT, Id.EC};
+	private final static Id[]     candidates = {Id.S2X, Id.EC};
 	private final static Period[] periods    = {Period.D1, Period.D7, Period.D30};
 
 	private final ContentValues config = new ContentValues();
@@ -96,8 +94,8 @@ public class ConfigActivity extends Activity {
 		config.put(Config.CANDIDATE, id.name());
 
 		switch (id) {
-			case SEGWIT:
-				candidateView.setText(R.string.segwit_long);
+			case S2X:
+				candidateView.setText(R.string.s2x_long);
 				break;
 			case EC:
 				candidateView.setText(R.string.ec_long);

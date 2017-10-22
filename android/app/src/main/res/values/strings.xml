@@ -18,7 +18,7 @@
     <string name="app_name">Block Vote</string>
     <string name="formatted">%.1f%%</string>
     <string name="name_ec">Emergent Consensus</string>
-    <string name="name_segwit">Segregated Witness</string>
+    <string name="name_s2x">NYA / Segwit2X</string>
     <string name="head_d1">1 day</string>
     <string name="head_d7">7 days</string>
     <string name="head_d30">30 days</string>
@@ -30,8 +30,8 @@
     <string name="about_title">App info</string>
     <string name="about_info">This app is open source. To find out more about this app and how you can collaborate and support the development, please visit the project\'s website.</string>
     <string name="about_button">open project website</string>
-    <string name="name_segwit_short">SW</string>
-    <string name="name_unlimited_short">EC</string>
+    <string name="name_s2x_short">S2X</string>
+    <string name="name_ec_short">EC</string>
     <string name="widget_info_period">during last 24h</string>
     <string name="widget_title">Block Vote</string>
     <string name="widget_empty">Waiting for data…</string>

@@ -56,7 +56,7 @@
             android:id="@+id/appwidget_name_sw"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/name_segwit_short"
+            android:text="@string/name_s2x_short"
             android:textColor="#ffffff"
             android:textSize="24sp"/>
 
@@ -80,7 +80,7 @@
             android:id="@+id/appwidget_name_ec"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/name_unlimited_short"
+            android:text="@string/name_ec_short"
             android:textColor="#ffffff"
             android:textSize="24sp"/>
 

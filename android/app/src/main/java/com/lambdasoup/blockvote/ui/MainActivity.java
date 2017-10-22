@@ -16,15 +16,14 @@
 
 package com.lambdasoup.blockvote.ui;
 
-import android.arch.lifecycle.LifecycleActivity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.annotation.UiThread;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -35,13 +34,9 @@ import com.lambdasoup.blockvote.R;
 import com.lambdasoup.blockvote.base.data.StatsProvider;
 import com.lambdasoup.blockvote.viewmodel.MainViewModel;
 
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
 import static android.net.Uri.parse;
 
-public class MainActivity extends LifecycleActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
 	/* views */
 	private HistoryCardView historyView;
@@ -90,7 +85,7 @@ public class MainActivity extends LifecycleActivity implements LoaderManager.Loa
 				historyView.setData(data.data);
 				break;
 			case ERROR:
-				historyView.setProgress();
+				historyView.setError();
 				break;
 		}
 	}

@@ -234,12 +234,12 @@ public class HistoryView extends View {
 			return;
 		}
 
-		calcPath(sw1dPath, data.sw1d, chartMatrix);
-		calcPath(sw7dPath, data.sw7d, chartMatrix);
-		calcPath(sw30dPath, data.sw30d, chartMatrix);
-		calcPath(bu1dPath, data.bu1d, chartMatrix);
-		calcPath(bu7dPath, data.bu7d, chartMatrix);
-		calcPath(bu30dPath, data.bu30d, chartMatrix);
+		calcPath(sw1dPath, data.s2x1d, chartMatrix);
+		calcPath(sw7dPath, data.s2x7d, chartMatrix);
+		calcPath(sw30dPath, data.s2x30d, chartMatrix);
+		calcPath(bu1dPath, data.ec1d, chartMatrix);
+		calcPath(bu7dPath, data.ec7d, chartMatrix);
+		calcPath(bu30dPath, data.ec30d, chartMatrix);
 	}
 
 	@Override

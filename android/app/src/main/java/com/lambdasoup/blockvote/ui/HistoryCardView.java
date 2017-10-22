@@ -54,9 +54,9 @@ public class HistoryCardView extends CardView implements View.OnClickListener {
 
 		LayoutInflater.from(context).inflate(R.layout.card_history, this);
 
-		historyView = (HistoryView) findViewById(R.id.history);
-		animatorView = (ViewAnimator) findViewById(R.id.animator);
-		intervalView = (TextView) findViewById(R.id.interval);
+		historyView = findViewById(R.id.history);
+		animatorView = findViewById(R.id.animator);
+		intervalView = findViewById(R.id.interval);
 		findViewById(R.id.btn_retry).setOnClickListener(this);
 	}
 

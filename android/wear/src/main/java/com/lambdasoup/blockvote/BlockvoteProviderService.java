@@ -85,8 +85,8 @@ public class BlockvoteProviderService extends ComplicationProviderService {
 		String formattedValue = String.format(Locale.getDefault(), "%.1f%%", value * 100);
 		String label;
 		switch (configId) {
-			case SEGWIT:
-				label = getString(R.string.segwit_short);
+			case S2X:
+				label = getString(R.string.s2x_short);
 				break;
 			case EC:
 				label = getString(R.string.ec_short);

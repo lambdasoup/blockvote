@@ -100,19 +100,19 @@
             <TableRow>
 
                 <TextView
-                    android:text="@string/name_segwit"
+                    android:text="@string/name_s2x"
                     android:textStyle="bold"/>
 
                 <TextView
-                    android:id="@+id/segwit_d1"
+                    android:id="@+id/s2x_d1"
                     tools:text="32.3%"/>
 
                 <TextView
-                    android:id="@+id/segwit_d7"
+                    android:id="@+id/s2x_d7"
                     tools:text="21.7%"/>
 
                 <TextView
-                    android:id="@+id/segwit_d30"
+                    android:id="@+id/s2x_d30"
                     tools:text="19.8%"/>
 
             </TableRow>

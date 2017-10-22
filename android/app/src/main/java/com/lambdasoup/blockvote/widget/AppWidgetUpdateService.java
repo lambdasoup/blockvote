@@ -54,7 +54,7 @@ public class AppWidgetUpdateService extends JobIntentService {
 			cursor.moveToPrevious();
 			while (cursor.moveToNext()) {
 				switch (getEnum(cursor, Stats.ID, Id.class)) {
-					case SEGWIT:
+					case S2X:
 						setCell(views, R.id.appwidget_value_sw, getFloat(cursor, Stats.D1));
 						break;
 

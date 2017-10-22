@@ -57,9 +57,9 @@ public class StatsCardView extends CardView {
 
 		if (isInEditMode()) {
 			setEmpty(false);
-			setCell(R.id.segwit_d1, 21.4f);
-			setCell(R.id.segwit_d7, 20.2f);
-			setCell(R.id.segwit_d30, 24.8f);
+			setCell(R.id.s2x_d1, 21.4f);
+			setCell(R.id.s2x_d7, 20.2f);
+			setCell(R.id.s2x_d30, 24.8f);
 			setCell(R.id.ec_d1, 31.1f);
 			setCell(R.id.ec_d7, 33.3f);
 			setCell(R.id.ec_d30, 37.9f);
@@ -95,10 +95,10 @@ public class StatsCardView extends CardView {
 			setLastUpdated(CursorUtils.getString(cursor, Stats.TIME));
 
 			switch (CursorUtils.getEnum(cursor, Stats.ID, Id.class)) {
-				case SEGWIT:
-					setCell(R.id.segwit_d1, CursorUtils.getFloat(cursor, Stats.D1));
-					setCell(R.id.segwit_d7, CursorUtils.getFloat(cursor, Stats.D7));
-					setCell(R.id.segwit_d30, CursorUtils.getFloat(cursor, Stats.D30));
+				case S2X:
+					setCell(R.id.s2x_d1, CursorUtils.getFloat(cursor, Stats.D1));
+					setCell(R.id.s2x_d7, CursorUtils.getFloat(cursor, Stats.D7));
+					setCell(R.id.s2x_d30, CursorUtils.getFloat(cursor, Stats.D30));
 					break;
 
 				case EC:
