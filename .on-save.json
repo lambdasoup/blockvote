@@ -3,6 +3,6 @@
     "srcDir": "service",
     "destDir": "service",
     "files": "**/*.proto",
-    "command": "go generate service/generate.go"
+    "command": "go generate service/service.go"
   }
 ]

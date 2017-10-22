@@ -1,2 +1,2 @@
-*.go
-!generate.go
+# ignore auto generated
+*.pb.go
