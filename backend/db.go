@@ -146,8 +146,9 @@ func (ds *Datastore) GetStats(n int) ([]Stats, error) {
 	vks := []*datastore.Key{}
 	for _, k := range ks {
 		swk := datastore.NewKey(ds.ctx, "Vote", "segwit", 0, k)
-		buk := datastore.NewKey(ds.ctx, "Vote", "unlimited", 0, k)
-		vks = append(vks, swk, buk)
+		s2xk := datastore.NewKey(ds.ctx, "Vote", "s2x", 0, k)
+		eck := datastore.NewKey(ds.ctx, "Vote", "ec", 0, k)
+		vks = append(vks, swk, eck, s2xk)
 	}
 
 	// get child values (sw0, bu0, sw1, bu1,...)
@@ -160,8 +161,10 @@ func (ds *Datastore) GetStats(n int) ([]Stats, error) {
 	// fill stats with child data
 	for i := range ss {
 		ss[i].Votes = make(map[string]Vote)
-		ss[i].Votes["segwit"] = vs[2*i]
-		ss[i].Votes["unlimited"] = vs[2*i+1]
+		ss[i].Votes["segwit"] = vs[3*i]
+		ss[i].Votes["ec"] = vs[3*i+1]
+		ss[i].Votes["s2x"] = vs[3*i+2]
+		ss[i].Votes["unlimited"] = ss[i].Votes["ec"]
 	}
 
 	return ss, nil

@@ -20,8 +20,9 @@ type Config struct {
 }
 
 var (
-	signalAD = []byte("AD")
-	signalEB = []byte("EB")
+	signalAD  = []byte("AD")
+	signalEB  = []byte("EB")
+	signalS2X = []byte("NYA")
 )
 
 // Block is one Blockchain entry
@@ -74,6 +75,7 @@ func (be *Backend) updateStats(ts time.Time) error {
 	total := make([]int, 3)
 	swcs := make([]int, 3)
 	eccs := make([]int, 3)
+	s2xcs := make([]int, 3)
 
 	err := be.ForEachFrom(d30ts, func(b Block) {
 		total[0]++
@@ -83,6 +85,9 @@ func (be *Backend) updateStats(ts time.Time) error {
 		if hasECSignal(b) {
 			eccs[0]++
 		}
+		if hasS2XSignal(b) {
+			s2xcs[0]++
+		}
 
 		if b.Timestamp.After(d7ts) {
 			total[1]++
@@ -91,6 +96,9 @@ func (be *Backend) updateStats(ts time.Time) error {
 			}
 			if hasECSignal(b) {
 				eccs[1]++
+			}
+			if hasS2XSignal(b) {
+				s2xcs[1]++
 			}
 		}
 
@@ -102,6 +110,9 @@ func (be *Backend) updateStats(ts time.Time) error {
 			if hasECSignal(b) {
 				eccs[2]++
 			}
+			if hasS2XSignal(b) {
+				s2xcs[2]++
+			}
 		}
 	})
 	if err != nil {
@@ -110,6 +121,7 @@ func (be *Backend) updateStats(ts time.Time) error {
 
 	s.Votes["segwit"] = makeVote(swcs, total)
 	s.Votes["ec"] = makeVote(eccs, total)
+	s.Votes["s2x"] = makeVote(s2xcs, total)
 	s.Votes["unlimited"] = s.Votes["ec"]
 
 	err = be.SaveStats(s)
@@ -137,6 +149,14 @@ func hasECSignal(b Block) bool {
 		panic(fmt.Sprintf("could not decode script in block %v", b))
 	}
 	return bytes.Contains(bs, signalAD) && bytes.Contains(bs, signalEB)
+}
+
+func hasS2XSignal(b Block) bool {
+	bs, err := hex.DecodeString(b.Script)
+	if err != nil {
+		panic(fmt.Sprintf("could not decode script in block %v", b))
+	}
+	return bytes.Contains(bs, signalS2X)
 }
 
 func makeVote(cs []int, total []int) Vote {

@@ -110,7 +110,7 @@ func Test_Stats(t *testing.T) {
 		t.Errorf("wrong timestamp in saved stats")
 	}
 
-	if len(db.stats.Votes) != 2 {
+	if len(db.stats.Votes) != 4 {
 		t.Errorf("wrong vote count: %v", db.stats)
 	}
 
