@@ -24,7 +24,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.lambdasoup.blockvote.R;
 
 public class AttributionActivity extends AppCompatActivity {
@@ -53,11 +52,6 @@ public class AttributionActivity extends AppCompatActivity {
 					text = getString(R.string.license_text_supportlib);
 					break;
 
-				case GMS:
-					title = getString(R.string.license_title_playservices);
-					text = GoogleApiAvailability.getInstance().getOpenSourceSoftwareLicenseInfo(getApplicationContext());
-					break;
-
 				default:
 					throw new IllegalArgumentException("unknown attribution key: " + attribution.name());
 			}
@@ -77,14 +71,13 @@ public class AttributionActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_attribution);
 
-		RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
+		RecyclerView recyclerView = findViewById(R.id.list);
 		recyclerView.setAdapter(adapter);
 	}
 
 	private enum Attribution {
 		BLOCKVOTE,
 		SUPPORTLIB,
-		GMS
 	}
 
 	private static class AttributionViewHolder extends RecyclerView.ViewHolder {
@@ -95,8 +88,8 @@ public class AttributionActivity extends AppCompatActivity {
 		AttributionViewHolder(View itemView) {
 			super(itemView);
 
-			title = (TextView) itemView.findViewById(R.id.title);
-			text = (TextView) itemView.findViewById(R.id.text);
+			title = itemView.findViewById(R.id.title);
+			text = itemView.findViewById(R.id.text);
 		}
 	}
 }

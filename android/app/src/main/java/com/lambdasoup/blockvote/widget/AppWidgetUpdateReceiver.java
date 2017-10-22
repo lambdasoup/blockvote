@@ -14,19 +14,16 @@
  * limitations under the License.
  */
 
-package com.lambdasoup.blockvote;
+package com.lambdasoup.blockvote.widget;
 
-import android.content.ComponentName;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v4.app.JobIntentService;
-import android.support.wearable.complications.ProviderUpdateRequester;
 
-public class ComplicationUpdateService extends JobIntentService {
-
+public class AppWidgetUpdateReceiver extends BroadcastReceiver {
 	@Override
-	protected void onHandleWork(@NonNull Intent intent) {
-		new ProviderUpdateRequester(this, new ComponentName(this, BlockvoteProviderService.class))
-				.requestUpdateAll();
+	public void onReceive(Context context, Intent intent) {
+		JobIntentService.enqueueWork(context, AppWidgetUpdateService.class, 1, intent);
 	}
 }

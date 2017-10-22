@@ -17,14 +17,14 @@
 package com.lambdasoup.blockvote.widget;
 
 import android.annotation.SuppressLint;
-import android.app.IntentService;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.annotation.IdRes;
-import android.util.Log;
+import android.support.annotation.NonNull;
+import android.support.v4.app.JobIntentService;
 import android.widget.RemoteViews;
 
 import com.lambdasoup.blockvote.R;
@@ -37,18 +37,10 @@ import static com.lambdasoup.blockvote.base.data.CursorUtils.getEnum;
 import static com.lambdasoup.blockvote.base.data.CursorUtils.getFloat;
 import static java.lang.String.format;
 
-public class AppWidgetUpdateService extends IntentService {
-
-	private static final String TAG = AppWidgetUpdateService.class.getSimpleName();
-
-	public AppWidgetUpdateService() {
-		super(AppWidgetUpdateService.class.getSimpleName());
-	}
+public class AppWidgetUpdateService extends JobIntentService {
 
 	@Override
-	protected void onHandleIntent(Intent intent) {
-		Log.d(TAG, "onHandleIntent: " + intent);
-
+	protected void onHandleWork(@NonNull Intent intent) {
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
 		int[]            ids              = appWidgetManager.getAppWidgetIds(new ComponentName(this, AppWidget.class));
 		RemoteViews      views            = new RemoteViews(getPackageName(), R.layout.app_widget);

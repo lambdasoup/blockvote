@@ -16,17 +16,14 @@
 
 package com.lambdasoup.blockvote;
 
-import android.content.ComponentName;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v4.app.JobIntentService;
-import android.support.wearable.complications.ProviderUpdateRequester;
 
-public class ComplicationUpdateService extends JobIntentService {
-
+public class ComplicationUpdateReceiver extends BroadcastReceiver {
 	@Override
-	protected void onHandleWork(@NonNull Intent intent) {
-		new ProviderUpdateRequester(this, new ComponentName(this, BlockvoteProviderService.class))
-				.requestUpdateAll();
+	public void onReceive(Context context, Intent intent) {
+		JobIntentService.enqueueWork(context, ComplicationUpdateService.class, 1, intent);
 	}
 }

@@ -66,7 +66,7 @@ public class BlockvoteFirebaseMessagingService extends FirebaseMessagingService 
 		// tell service to update all widgets
 		Intent intent = new Intent("com.lambdasoup.blockvote.UPDATE");
 		intent.setPackage(getPackageName());
-		startService(intent);
+		sendBroadcast(intent);
 	}
 
 	private ContentValues fromJson(JSONObject jsonObject, String id, String timestamp) throws JSONException {

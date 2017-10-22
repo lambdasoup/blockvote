@@ -35,7 +35,9 @@ android {
 dependencies {
     // google/firebase
     implementation "com.google.firebase:firebase-messaging:$playServicesVersion"
-    implementation "com.google.android.gms:play-services-base:$playServicesVersion"
+
+    // android support libs
+    implementation "com.android.support:support-v4:$supportLibVersion"
 
     // testing
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
