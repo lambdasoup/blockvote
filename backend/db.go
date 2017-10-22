@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"golang.org/x/net/context"
+	"google.golang.org/appengine"
 	"google.golang.org/appengine/datastore"
 	"google.golang.org/appengine/log"
 	"google.golang.org/appengine/memcache"
@@ -154,7 +155,10 @@ func (ds *Datastore) GetStats(n int) ([]Stats, error) {
 	// get child values (sw0, bu0, sw1, bu1,...)
 	vs := make([]Vote, len(vks))
 	err = datastore.GetMulti(ds.ctx, vks, vs)
-	if err != nil {
+	switch err.(type) {
+	case appengine.MultiError:
+		break
+	default:
 		return nil, err
 	}
 
